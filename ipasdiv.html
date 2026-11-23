@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan IPAS Kelas 5 - Misi HOTS Semester 1</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js untuk efek suara interaktif -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Google Fonts: Fredoka (ramah anak & ceria) & Plus Jakarta Sans (sangat mudah dibaca) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #eef2ff 0%, #f0fdfa 50%, #fefce8 100%);
+            min-height: 100vh;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Animasi tombol bergaya gim */
+        .btn-game {
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.2s ease;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+        }
+        .btn-game:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+        }
+        .btn-game:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+        }
+        .btn-game:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Kartu Opsi Jawaban */
+        .option-card {
+            transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-card:hover:not(:disabled) {
+            transform: translateX(4px);
+            border-color: #6366f1;
+            background-color: #eef2ff;
+        }
+
+        /* Animasi melayang untuk ikon sains */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(4deg); }
+        }
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+        .animate-float-delay {
+            animation: floatSlow 5s ease-in-out 1.2s infinite;
+        }
+
+        /* Animasi masuk */
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-pop {
+            animation: popIn 0.3s ease-out forwards;
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 60;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-200 selection:text-indigo-900">
+
+    <!-- Canvas Confetti untuk perayaan selesai -->
+    <canvas id="confetti-canvas" class="hidden"></canvas>
+
+    <!-- ========================================== -->
+    <!-- LAYAR 1: HALAMAN MULAI & REGISTRASI SISWA -->
+    <!-- ========================================== -->
+    <main id="screen-start" class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-4xl bg-white/90 backdrop-blur-md rounded-3xl shadow-xl border-2 border-indigo-100 overflow-hidden animate-pop">
+            <!-- Header Banner -->
+            <div class="relative bg-gradient-to-r from-indigo-600 via-blue-600 to-teal-500 p-6 sm:p-10 text-white overflow-hidden">
+                <!-- Dekorasi Ikon Sains -->
+                <div class="absolute top-4 right-6 text-4xl sm:text-6xl opacity-25 animate-float select-none">🧬</div>
+                <div class="absolute bottom-3 right-24 text-3xl sm:text-5xl opacity-25 animate-float-delay select-none">🌿</div>
+                <div class="absolute top-12 right-44 text-3xl sm:text-4xl opacity-20 animate-float select-none">💡</div>
+                
+                <div class="relative z-10">
+                    <span class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold tracking-wide uppercase mb-3">
+                        <span>🚀</span> Gim Edukasi Interaktif SD Kelas 5
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-bold leading-tight mb-2">
+                        Petualangan IPAS<br><span class="text-amber-300">Misi HOTS Semester 1</span>
+                    </h1>
+                    <p class="text-indigo-100 text-sm sm:text-base max-w-2xl">
+                        Uji kemampuan berpikir tingkat tinggi (HOTS Level 5) melalui 50 tantangan kasus nyata! Kumpulkan skor maksimal <strong>100</strong> dan raih <strong>Sertifikat Penghargaan</strong> resmi.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Konten Form & Ringkasan Materi -->
+            <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Kolom Kiri: Form Biodata -->
+                <div class="lg:col-span-7 space-y-5">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-1">
+                            <span>🧑‍🔬</span> Identitas Penjelajah Sains
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Nama akan dicetak secara otomatis pada Sertifikat Penghargaan.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="input-name" class="block text-sm font-bold text-slate-700 mb-1.5">Nama Lengkap Siswa <span class="text-rose-500">*</span></label>
+                            <input type="text" id="input-name" placeholder="Contoh: Raka Pratama" maxlength="45"
+                                class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none font-semibold text-slate-800 transition">
+                            <p id="name-error" class="hidden text-xs font-semibold text-rose-600 mt-1">⚠️ Silakan masukkan namamu terlebih dahulu ya!</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="input-class" class="block text-sm font-bold text-slate-700 mb-1.5">Kelas</label>
+                                <input type="text" id="input-class" value="Kelas 5 SD" maxlength="20"
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none font-semibold text-slate-800 transition">
+                            </div>
+                            <div>
+                                <label for="input-school" class="block text-sm font-bold text-slate-700 mb-1.5">Asal Sekolah (Opsional)</label>
+                                <input type="text" id="input-school" placeholder="Contoh: SDN 01 Nusantara" maxlength="40"
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none font-semibold text-slate-800 transition">
+                            </div>
+                        </div>
+
+                        <!-- Pilihan Mode Permainan -->
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Pilih Mode Bermain:</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="game-mode" value="adventure" checked class="peer hidden">
+                                    <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition h-full">
+                                        <div class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+                                            <span>🌟</span> Mode Petualangan
+                                        </div>
+                                        <p class="text-xs text-slate-500 mt-1">Skor & pembahasan HOTS langsung muncul setiap selesai menjawab 1 soal.</p>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="game-mode" value="exam" class="peer hidden">
+                                    <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-teal-600 peer-checked:bg-teal-50 transition h-full">
+                                        <div class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+                                            <span>📝</span> Mode Evaluasi
+                                        </div>
+                                        <p class="text-xs text-slate-500 mt-1">Bisa ubah jawaban sebelum selesai. Skor & pembahasan tampil di akhir.</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btn-start-game" class="btn-game w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-display text-xl font-bold tracking-wide flex items-center justify-center gap-2">
+                        <span>Mulai Misi 50 Soal HOTS</span>
+                        <span>🚀</span>
+                    </button>
+                </div>
+
+                <!-- Kolom Kanan: Peta Materi Sesuai Buku -->
+                <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-display font-bold text-lg text-slate-800 mb-3 flex items-center gap-2">
+                            <span>📚</span> Cakupan Materi Semester 1
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3.5 rounded-xl border border-rose-100 shadow-sm">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-rose-700">Bab 1: Proses dalam Tubuh Manusia</span>
+                                    <span class="text-xs font-bold bg-rose-100 text-rose-700 px-2.5 py-0.5 rounded-full">20 Soal</span>
+                                </div>
+                                <p class="text-xs text-slate-500">Sistem Pencernaan, Pernapasan, Peredaran Darah, & Sistem Gerak.</p>
+                            </div>
+
+                            <div class="bg-white p-3.5 rounded-xl border border-emerald-100 shadow-sm">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-emerald-700">Bab 2: Ekosistem di Sekitarku</span>
+                                    <span class="text-xs font-bold bg-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full">15 Soal</span>
+                                </div>
+                                <p class="text-xs text-slate-500">Komponen Ekosistem, Hubungan Antarkomponen, & Keseimbangan Ekosistem.</p>
+                            </div>
+
+                            <div class="bg-white p-3.5 rounded-xl border border-amber-100 shadow-sm">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-amber-700">Bab 3: Mengenal Bunyi & Cahaya</span>
+                                    <span class="text-xs font-bold bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full">15 Soal</span>
+                                </div>
+                                <p class="text-xs text-slate-500">Sifat Bunyi, Perambatan, Pemantulan, Sifat Cahaya, Cermin & Indra.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-slate-200 grid grid-cols-3 gap-2 text-center">
+                        <div class="bg-indigo-50 rounded-xl p-2">
+                            <div class="font-display font-bold text-indigo-700 text-lg">50</div>
+                            <div class="text-[11px] font-semibold text-slate-600">Soal HOTS</div>
+                        </div>
+                        <div class="bg-teal-50 rounded-xl p-2">
+                            <div class="font-display font-bold text-teal-700 text-lg">A - E</div>
+                            <div class="text-[11px] font-semibold text-slate-600">5 Opsi</div>
+                        </div>
+                        <div class="bg-amber-50 rounded-xl p-2">
+                            <div class="font-display font-bold text-amber-700 text-lg">100</div>
+                            <div class="text-[11px] font-semibold text-slate-600">Skor Maks</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- LAYAR 2: ARENA PERMAINAN / KUIS HOTS      -->
+    <!-- ========================================== -->
+    <section id="screen-quiz" class="hidden min-h-screen flex flex-col">
+        <!-- Top HUD Navbar -->
+        <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+            <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+                <!-- Info Siswa -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-display font-bold text-lg shadow-sm">
+                        🧑‍🔬
+                    </div>
+                    <div>
+                        <div id="hud-name" class="font-bold text-sm sm:text-base text-slate-800 leading-tight">Nama Siswa</div>
+                        <div id="hud-mode-badge" class="text-xs font-semibold text-indigo-600">Mode Petualangan</div>
+                    </div>
+                </div>
+
+                <!-- Statistik Live -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Skor (Tampil langsung di mode Petualangan) -->
+                    <div id="hud-score-box" class="bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                        <span class="text-base">⭐</span>
+                        <div class="text-xs sm:text-sm font-extrabold text-amber-800">
+                            Skor: <span id="hud-score">0</span><span class="text-amber-600/70">/100</span>
+                        </div>
+                    </div>
+
+                    <!-- Streak -->
+                    <div id="hud-streak-box" class="hidden sm:flex bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-xl items-center gap-1">
+                        <span>🔥</span>
+                        <span id="hud-streak" class="text-sm font-extrabold text-rose-700">0</span>
+                    </div>
+
+                    <!-- Tombol Suara -->
+                    <button id="btn-sound" title="Suara Efek" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                        <span id="sound-icon">🔊</span>
+                    </button>
+
+                    <!-- Tombol Peta Soal -->
+                    <button id="btn-open-map" class="px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs sm:text-sm flex items-center gap-1.5 border border-indigo-200 transition">
+                        <span>🗺️</span>
+                        <span class="hidden sm:inline">Peta Soal</span>
+                        <span id="hud-answered-count" class="bg-indigo-600 text-white px-2 py-0.5 rounded-full text-xs">0/50</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full h-2 bg-slate-100">
+                <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 via-blue-500 to-teal-400 transition-all duration-300" style="width: 2%"></div>
+            </div>
+        </header>
+
+        <!-- Area Soal Utama -->
+        <div class="flex-1 max-w-4xl w-full mx-auto px-4 py-6 sm:py-8 flex flex-col justify-between">
+            <div id="question-container" class="bg-white rounded-3xl shadow-lg border-2 border-slate-100 p-5 sm:p-8 animate-pop">
+                <!-- Meta Tags Soal -->
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span id="q-number-badge" class="bg-indigo-600 text-white font-display font-bold text-xs sm:text-sm px-3.5 py-1 rounded-full">
+                            Soal 1 / 50
+                        </span>
+                        <span id="q-bab-badge" class="bg-rose-100 text-rose-700 font-bold text-xs px-3 py-1 rounded-full">
+                            Bab 1 • Sistem Pencernaan
+                        </span>
+                    </div>
+                    <span id="q-hots-badge" class="bg-amber-100 text-amber-800 font-extrabold text-xs px-3 py-1 rounded-full border border-amber-200">
+                        🧠 HOTS Level 5 (C5)
+                    </span>
+                </div>
+
+                <!-- Teks Pertanyaan -->
+                <h2 id="q-text" class="text-base sm:text-xl font-bold text-slate-800 leading-relaxed mb-6">
+                    Memuat pertanyaan...
+                </h2>
+
+                <!-- Daftar 5 Opsi Jawaban (A - E) -->
+                <div id="options-list" class="space-y-3">
+                    <!-- Opsi akan di-render via JavaScript -->
+                </div>
+
+                <!-- Panel Pembahasan (Muncul di Mode Petualangan setelah menjawab) -->
+                <div id="feedback-box" class="hidden mt-6 p-4 sm:p-5 rounded-2xl border-2 animate-pop">
+                    <div class="flex items-start gap-3">
+                        <div id="feedback-icon" class="text-2xl sm:text-3xl mt-0.5">✅</div>
+                        <div class="flex-1">
+                            <h4 id="feedback-title" class="font-display font-bold text-base sm:text-lg mb-1">Hebat! Jawabanmu Benar (+2 Poin)</h4>
+                            <p id="feedback-text" class="text-xs sm:text-sm text-slate-700 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Navigasi Bawah -->
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+                <button id="btn-prev" class="btn-game px-5 py-3 rounded-2xl bg-white border-2 border-slate-200 text-slate-700 font-bold text-sm sm:text-base flex items-center gap-2">
+                    <span>⬅️</span> Sebelumnya
+                </button>
+
+                <div class="flex items-center gap-3 ml-auto">
+                    <button id="btn-finish-early" class="btn-game px-4 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base flex items-center gap-1.5">
+                        <span>🏁</span> Selesai & Lihat Nilai
+                    </button>
+                    <button id="btn-next" class="btn-game px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm sm:text-base flex items-center gap-2">
+                        Selanjutnya <span>➡️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- LAYAR 3: HASIL SKOR & SERTIFIKAT           -->
+    <!-- ========================================== -->
+    <section id="screen-result" class="hidden min-h-screen py-8 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto space-y-6 animate-pop">
+            
+            <!-- Kartu Ringkasan Skor -->
+            <div class="bg-white rounded-3xl shadow-xl border-2 border-indigo-100 overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-600 via-blue-600 to-teal-500 p-6 sm:p-8 text-white text-center relative">
+                    <div id="result-trophy" class="text-6xl sm:text-7xl mb-2 animate-float">🏆</div>
+                    <h2 class="text-2xl sm:text-4xl font-display font-bold mb-1">Misi IPAS Selesai!</h2>
+                    <p id="result-student-info" class="text-indigo-100 font-semibold text-sm sm:text-base">Raka Pratama • Kelas 5 SD</p>
+                </div>
+
+                <div class="p-6 sm:p-8">
+                    <!-- Grid Metrik Utama -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 text-center">
+                            <div class="text-xs font-bold text-indigo-600 uppercase">Total Skor</div>
+                            <div class="font-display text-3xl sm:text-4xl font-bold text-indigo-800 mt-1">
+                                <span id="res-score">0</span><span class="text-lg text-indigo-400">/100</span>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center">
+                            <div class="text-xs font-bold text-emerald-600 uppercase">Jawaban Benar</div>
+                            <div class="font-display text-3xl sm:text-4xl font-bold text-emerald-700 mt-1">
+                                <span id="res-correct">0</span><span class="text-lg text-emerald-400">/50</span>
+                            </div>
+                        </div>
+                        <div class="bg-rose-50 border border-rose-100 rounded-2xl p-4 text-center">
+                            <div class="text-xs font-bold text-rose-600 uppercase">Jawaban Salah</div>
+                            <div class="font-display text-3xl sm:text-4xl font-bold text-rose-700 mt-1" id="res-wrong">0</div>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-center">
+                            <div class="text-xs font-bold text-amber-600 uppercase">Predikat</div>
+                            <div class="font-display text-base sm:text-lg font-bold text-amber-800 mt-2 leading-tight" id="res-predicate">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Rincian Penguasaan per Bab -->
+                    <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+                        <h3 class="font-display font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">
+                            <span>📊</span> Analisis Penguasaan Materi per Bab
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm font-bold mb-1">
+                                    <span class="text-rose-700">Bab 1: Proses dalam Tubuh Manusia</span>
+                                    <span id="stat-bab1-text" class="text-slate-700">0/20 Benar (0%)</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                    <div id="stat-bab1-bar" class="h-full bg-rose-500 rounded-full transition-all duration-700" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm font-bold mb-1">
+                                    <span class="text-emerald-700">Bab 2: Ekosistem di Sekitarku</span>
+                                    <span id="stat-bab2-text" class="text-slate-700">0/15 Benar (0%)</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                    <div id="stat-bab2-bar" class="h-full bg-emerald-500 rounded-full transition-all duration-700" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm font-bold mb-1">
+                                    <span class="text-amber-700">Bab 3: Mengenal Bunyi dan Cahaya</span>
+                                    <span id="stat-bab3-text" class="text-slate-700">0/15 Benar (0%)</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                    <div id="stat-bab3-bar" class="h-full bg-amber-500 rounded-full transition-all duration-700" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kartu Sertifikat Penghargaan -->
+            <div class="bg-white rounded-3xl shadow-xl border-2 border-amber-200 p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+                    <div>
+                        <h3 class="font-display text-2xl font-bold text-slate-800 flex items-center gap-2">
+                            <span>🏅</span> Sertifikat Penghargaan
+                        </h3>
+                        <p class="text-sm text-slate-500">Pratinjau sertifikat prestasimu. Klik tombol unduh untuk menyimpan sebagai gambar PNG berkualitas tinggi.</p>
+                    </div>
+                    <button id="btn-download-cert" class="btn-game px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-display font-bold text-base flex items-center justify-center gap-2 shrink-0">
+                        <span>⬇️</span> Unduh Sertifikat (PNG)
+                    </button>
+                </div>
+
+                <!-- Canvas Sertifikat Responsif -->
+                <div class="w-full overflow-hidden rounded-2xl border-4 border-amber-100 shadow-inner bg-slate-100">
+                    <canvas id="certificate-canvas" class="w-full h-auto block"></canvas>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi Akhir -->
+            <div class="flex flex-wrap items-center justify-center gap-4 pb-8">
+                <button id="btn-toggle-review" class="btn-game px-6 py-3.5 rounded-2xl bg-white border-2 border-indigo-200 text-indigo-700 font-bold flex items-center gap-2">
+                    <span>📖</span> Lihat Pembahasan 50 Soal
+                </button>
+                <button id="btn-play-again" class="btn-game px-6 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold flex items-center gap-2">
+                    <span>🔄</span> Main Lagi dari Awal
+                </button>
+            </div>
+
+            <!-- Panel Pembahasan Lengkap (Toggle) -->
+            <div id="review-section" class="hidden bg-white rounded-3xl shadow-xl border-2 border-slate-200 p-6 sm:p-8 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                    <h3 class="font-display text-xl sm:text-2xl font-bold text-slate-800">📖 Pembahasan Lengkap 50 Soal HOTS</h3>
+                    <button id="btn-close-review" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm">Tutup ✕</button>
+                </div>
+                <div id="review-list" class="space-y-4 max-h-[650px] overflow-y-auto pr-2">
+                    <!-- Item pembahasan dirender di sini -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MODAL PETA SOAL (NAVIGATOR 1 - 50)         -->
+    <!-- ========================================== -->
+    <div id="modal-map" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden animate-pop">
+            <div class="p-5 border-b border-slate-200 flex items-center justify-between bg-indigo-50">
+                <div>
+                    <h3 class="font-display font-bold text-xl text-indigo-900">🗺️ Peta 50 Soal HOTS</h3>
+                    <p class="text-xs text-indigo-600">Klik nomor soal untuk langsung berpindah.</p>
+                </div>
+                <button id="btn-close-map" class="w-9 h-9 rounded-xl bg-white text-slate-600 hover:bg-rose-50 hover:text-rose-600 font-bold shadow-sm transition">✕</button>
+            </div>
+            <div class="p-5 overflow-y-auto">
+                <div id="map-grid" class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                    <!-- 50 tombol nomor soal -->
+                </div>
+                <div class="mt-5 pt-4 border-t border-slate-200 flex flex-wrap gap-3 text-xs font-semibold text-slate-600">
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-indigo-600 inline-block"></span> Sedang Dibuka</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-emerald-500 inline-block"></span> Benar / Terjawab</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-rose-500 inline-block"></span> Salah</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-slate-100 border border-slate-300 inline-block"></span> Belum Dijawab</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL KONFIRMASI (PENGGANTI CONFIRM/ALERT) -->
+    <!-- ========================================== -->
+    <div id="modal-confirm" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 text-center animate-pop">
+            <div id="confirm-icon" class="text-5xl mb-3">🏁</div>
+            <h3 id="confirm-title" class="font-display font-bold text-xl text-slate-800 mb-2">Selesaikan Misi Sekarang?</h3>
+            <p id="confirm-message" class="text-sm text-slate-600 mb-6 leading-relaxed"></p>
+            <div class="flex items-center justify-center gap-3">
+                <button id="btn-confirm-cancel" class="btn-game px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm">Batal</button>
+                <button id="btn-confirm-ok" class="btn-game px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm">Ya, Lanjutkan!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifikasi -->
+    <div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-800 text-white px-5 py-3 rounded-2xl shadow-lg font-semibold text-sm flex items-center gap-2 animate-pop">
+        <span id="toast-text">Pesan notifikasi</span>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- LOGIKA JAVASCRIPT & BANK 50 SOAL HOTS      -->
+    <!-- ========================================== -->
+    <script>
+        /**
+         * BANK 50 SOAL HOTS LEVEL 5 (C4-C5-C6) IPAS KELAS 5 SEMESTER 1
+         * Berdasarkan daftar isi buku:
+         * - Bab 1: Proses dalam Tubuh Manusia (20 soal: 1-20)
+         * - Bab 2: Ekosistem di Sekitarku (15 soal: 21-35)
+         * - Bab 3: Mengenal Bunyi dan Cahaya (15 soal: 36-50)
+         * Total Skor Maksimal: 50 soal x 2 poin = 100
+         */
+        const QUESTIONS = [
+            // =========================================================================
+            // BAB 1: PROSES DALAM TUBUH MANUSIA (SOAL 1 - 20)
+            // =========================================================================
+            // Subbab A: Sistem Pencernaan (1 - 5)
+            {
+                id: 1, bab: 1, sub: "Sistem Pencernaan", level: "C4 (Menganalisis)",
+                q: "Beni sering melewatkan sarapan dan baru makan pada sore hari, sehingga ia sering merasakan perih di bagian ulu hati (maag). Mengapa kebiasaan menunda makan dapat melukai dinding lambung?",
+                opts: [
+                    "Makanan yang terlalu lama di mulut berubah menjadi racun saat masuk ke lambung",
+                    "Asam lambung (HCl) tetap diproduksi saat lambung kosong sehingga mengikis lapisan dinding lambung",
+                    "Usus halus berhenti menyerap sari makanan sehingga makanan menumpuk di kerongkongan",
+                    "Enzim ptialin di mulut gagal mengubah protein menjadi lemak sebelum masuk lambung",
+                    "Otot lambung berhenti berkontraksi secara permanen saat tidak ada air minum"
+                ],
+                ans: 1,
+                exp: "Lambung tetap menghasilkan asam klorida (HCl) sesuai jadwal makan. Jika lambung kosong, sifat asam yang kuat akan mengiritasi dan mengikis lapisan mukosa dinding lambung sehingga timbul nyeri maag."
+            },
+            {
+                id: 2, bab: 1, sub: "Sistem Pencernaan", level: "C5 (Mengevaluasi)",
+                q: "Sari mencoba mengunyah nasi putih perlahan selama 2 menit dan merasakan nasi berubah menjadi agak manis. Berdasarkan proses tersebut, apa dampak yang terjadi jika seseorang sering menelan makanan terburu-buru tanpa dikunyah halus?",
+                opts: [
+                    "Nasi langsung berubah menjadi protein di dalam kerongkongan",
+                    "Enzim amilase (ptialin) tidak bekerja optimal dan beban kerja pencernaan mekanik di lambung menjadi lebih berat",
+                    "Usus besar akan mengambil alih tugas gigi untuk menghancurkan butiran nasi",
+                    "Saluran pernapasan akan tersumbat oleh enzim yang diproduksi oleh pankreas",
+                    "Gula dalam nasi tidak dapat diserap sama sekali oleh pembuluh darah"
+                ],
+                ans: 1,
+                exp: "Di mulut terjadi pencernaan mekanik oleh gigi dan kimiawi oleh enzim ptialin yang mengubah amilum (karbohidrat) menjadi gula sederhana. Jika ditelan terburu-buru, lambung harus bekerja ekstra keras menghaluskan makanan."
+            },
+            {
+                id: 3, bab: 1, sub: "Sistem Pencernaan", level: "C5 (Mengevaluasi)",
+                q: "Akibat jajan sembarangan yang kurang higienis, Dika mengalami diare sehingga buang air besar terus-menerus dalam bentuk cair. Evaluasilah penyebab gangguan tersebut pada usus besar dan langkah pertolongan pertama yang paling tepat!",
+                opts: [
+                    "Usus besar menyerap terlalu banyak air; pertolongannya adalah menghentikan minum air putih",
+                    "Penyerapan air di usus besar terganggu akibat infeksi bakteri/virus; pertolongannya adalah memberi larutan oralit untuk mencegah dehidrasi",
+                    "Lambung tidak menghasilkan asam; pertolongannya adalah makan makanan yang sangat pedas",
+                    "Kerongkongan menyempit; pertolongannya adalah berolahraga lari agar gerakan peristaltik berhenti",
+                    "Hati berhenti bekerja; pertolongannya adalah tidur sepanjang hari tanpa minum"
+                ],
+                ans: 1,
+                exp: "Fungsi utama usus besar adalah menyerap air dari sisa makanan. Saat terinfeksi kuman, penyerapan air terganggu sehingga feses cair dan tubuh kehilangan banyak cairan. Oralit menggantikan cairan dan elektrolit yang hilang."
+            },
+            {
+                id: 4, bab: 1, sub: "Sistem Pencernaan", level: "C4 (Menganalisis)",
+                q: "Raka hanya menyukai makanan cepat saji seperti ayam goreng dan sosis, tetapi sangat jarang makan sayur, buah, serta kurang minum air. Akibatnya ia mengalami sembelit (konstipasi). Bagaimana hubungan pola makan Raka dengan kondisi usus besarnya?",
+                opts: [
+                    "Kurangnya serat dan air menyebabkan sisa makanan menjadi keras dan sulit didorong oleh gerak peristaltik usus besar",
+                    "Kelebihan protein membuat lambung berubah menjadi terlalu dingin untuk mencerna makanan",
+                    "Sayur dan buah mengandung lemak jenuh yang dibutuhkan untuk menyumbat usus halus",
+                    "Kurang minum air membuat gigi tidak mampu mengunyah daging di dalam rongga mulut",
+                    "Daging goreng tidak bisa melewati kerongkongan sehingga menumpuk di tenggorokan"
+                ],
+                ans: 0,
+                exp: "Serat dari sayur dan buah serta kecukupan air membantu melunakkan feses dan memperlancar gerak peristaltik di usus besar. Kekurangan keduanya memicu sembelit."
+            },
+            {
+                id: 5, bab: 1, sub: "Sistem Pencernaan", level: "C6 (Memprediksi)",
+                q: "Organ hati menghasilkan cairan empedu yang disalurkan ke usus halus untuk mengemulsikan (memecah) lemak. Jika seseorang mengalami penyumbatan saluran empedu, zat gizi apakah yang paling sulit dicerna oleh tubuhnya?",
+                opts: [
+                    "Vitamin C dari buah jeruk",
+                    "Air mineral dan garam dapur",
+                    "Lemak dari makanan bersantan dan gorengan",
+                    "Karbohidrat sederhana dari madu murni",
+                    "Mineral kalsium dari air putih"
+                ],
+                ans: 2,
+                exp: "Cairan empedu berperan memecah gumpalan lemak menjadi butiran halus agar mudah dicerna oleh enzim lipase. Jika saluran empedu tersumbat, pencernaan lemak akan terganggu."
+            },
+
+            // Subbab B: Sistem Pernapasan (6 - 10)
+            {
+                id: 6, bab: 1, sub: "Sistem Pernapasan", level: "C4 (Menganalisis)",
+                q: "Setelah berlari mengelilingi lapangan sekolah sebanyak 3 putaran, napas Rani menjadi sangat cepat dan terengah-engah. Mengapa tubuh Rani secara otomatis meningkatkan frekuensi pernapasannya?",
+                opts: [
+                    "Paru-paru berusaha mengeluarkan oksigen berlebih agar tubuh tidak kepanasan",
+                    "Otot yang bekerja keras membutuhkan lebih banyak oksigen untuk menghasilkan energi dan perlu segera membuang karbon dioksida",
+                    "Rongga hidung menyempit saat berlari sehingga udara harus dihirup melalui kulit",
+                    "Jantung berhenti memompa darah sehingga paru-paru menggantikan tugas jantung",
+                    "Diafragma menjadi kaku sehingga udara tidak bisa keluar dari bronkiolus"
+                ],
+                ans: 1,
+                exp: "Aktivitas fisik tinggi meningkatkan kebutuhan energi di sel-sel otot. Untuk menghasilkan energi, sel membutuhkan banyak oksigen (O2) dan menghasilkan lebih banyak karbon dioksida (CO2) yang harus segera dibuang lewat napas cepat."
+            },
+            {
+                id: 7, bab: 1, sub: "Sistem Pernapasan", level: "C5 (Mengevaluasi)",
+                q: "Saat terjadi kebakaran hutan, udara dipenuhi kabut asap dan partikel debu halus. Evaluasilah mengapa masker medis/N95 sangat penting digunakan meskipun hidung kita sudah memiliki rambut hidung dan selaput lendir!",
+                opts: [
+                    "Rambut hidung hanya bisa menyaring air, bukan debu",
+                    "Partikel asap yang sangat halus dapat lolos dari saringan hidung dan menumpuk di alveolus sehingga mengganggu pertukaran oksigen",
+                    "Masker berfungsi menghasilkan oksigen tambahan dari bahan kainnya",
+                    "Selaput lendir di hidung hanya bekerja pada malam hari saat kita tidur",
+                    "Asap kebakaran dapat langsung masuk melalui tulang rusuk menuju paru-paru"
+                ],
+                ans: 1,
+                exp: "Rambut hidung dan lendir menyaring debu berukuran besar, tetapi partikel asap mikroskopis (PM2.5) dapat lolos hingga ke alveolus dan memicu ISPA serta merusak pertukaran gas."
+            },
+            {
+                id: 8, bab: 1, sub: "Sistem Pernapasan", level: "C5 (Mengevaluasi)",
+                q: "Guru PJOK selalu mengingatkan siswa agar menghirup udara melalui hidung, bukan melalui mulut, terutama saat pagi hari yang dingin. Analisis keuntungan utama bernapas melalui hidung dibandingkan mulut!",
+                opts: [
+                    "Udara yang masuk lewat hidung langsung berubah menjadi energi tanpa melewati paru-paru",
+                    "Di rongga hidung udara disaring dari debu, dilembapkan, dan disesuaikan suhunya sebelum masuk ke tenggorokan",
+                    "Bernapas lewat hidung membuat paru-paru tidak perlu lagi mengeluarkan karbon dioksida",
+                    "Mulut tidak memiliki saluran yang terhubung dengan tenggorokan",
+                    "Volume udara yang masuk lewat hidung selalu mengandung lebih banyak nitrogen"
+                ],
+                ans: 1,
+                exp: "Rongga hidung dilengkapi rambut hidung (penyaring), selaput lendir (pelembap & penangkap kotoran), dan pembuluh darah halus (penghangat suhu udara), fitur yang tidak dimiliki rongga mulut."
+            },
+            {
+                id: 9, bab: 1, sub: "Sistem Pernapasan", level: "C6 (Memprediksi)",
+                q: "Penderita asma sering mengalami penyempitan saluran bronkus saat terpapar udara dingin atau debu. Prediksikan dampak langsung kondisi tersebut terhadap proses pernapasan penderita!",
+                opts: [
+                    "Aliran udara menuju dan dari alveolus terhambat sehingga penderita sesak napas dan terdengar bunyi mengi",
+                    "Tulang rusuk menjadi lebih kuat dan kapasitas paru-paru meningkat dua kali lipat",
+                    "Pertukaran oksigen berpindah dari paru-paru ke lambung secara otomatis",
+                    "Hidung berhenti memproduksi lendir sehingga napas menjadi sangat lega",
+                    "Darah tidak lagi membutuhkan oksigen untuk diedarkan ke otak"
+                ],
+                ans: 0,
+                exp: "Bronkus adalah cabang saluran udara menuju paru-paru. Saat menyempit dan membengkak pada serangan asma, jalan udara mengecil sehingga udara sulit keluar masuk (sesak napas dan mengi)."
+            },
+            {
+                id: 10, bab: 1, sub: "Sistem Pernapasan", level: "C4 (Menganalisis)",
+                q: "Pada percobaan model paru-paru dari botol plastik, sedotan, dan balon: ketika lembaran karet di bagian bawah botol ditarik ke bawah, kedua balon di dalam botol mengembang. Mekanisme pernapasan apakah yang ditunjukkan oleh percobaan tersebut?",
+                opts: [
+                    "Ekspirasi pernapasan dada saat tulang rusuk turun dan udara keluar",
+                    "Inspirasi pernapasan perut saat diafragma berkontraksi (mendatar), rongga dada membesar, tekanan udara mengecil sehingga udara masuk",
+                    "Proses pencernaan makanan saat lambung mengembang menampung air",
+                    "Ekspirasi pernapasan perut saat diafragma melengkung ke atas mendorong udara keluar",
+                    "Proses pemompaan darah dari serambi kanan menuju bilik kiri jantung"
+                ],
+                ans: 1,
+                exp: "Lembaran karet bawah mewakili otot diafragma. Saat ditarik ke bawah (berkontraksi/mendatar), volume ruang membesar dan tekanan udara di dalam botol turun sehingga udara luar masuk mengembangkan balon (inspirasi)."
+            },
+
+            // Subbab C: Sistem Peredaran Darah (11 - 15)
+            {
+                id: 11, bab: 1, sub: "Sistem Peredaran Darah", level: "C4 (Menganalisis)",
+                q: "Jika diamati strukturnya, dinding otot bilik kiri jantung jauh lebih tebal dibandingkan dinding bilik kanan. Mengapa struktur jantung dirancang demikian?",
+                opts: [
+                    "Bilik kiri hanya menampung darah kotor yang sangat berat",
+                    "Bilik kiri harus memompa darah kaya oksigen dengan tekanan kuat ke seluruh tubuh, sedangkan bilik kanan hanya memompa ke paru-paru yang dekat",
+                    "Bilik kanan tidak perlu berkontraksi karena darah mengalir sendiri ke paru-paru",
+                    "Bilik kiri menyimpan cadangan makanan berupa lemak untuk otot lengan",
+                    "Bilik kanan berfungsi menyaring debu dari udara sebelum masuk ke pembuluh vena"
+                ],
+                ans: 1,
+                exp: "Peredaran darah besar dimulai dari bilik kiri menuju seluruh tubuh (dari ujung kepala hingga ujung kaki) sehingga memerlukan daya pompa sangat kuat dan otot dinding yang tebal."
+            },
+            {
+                id: 12, bab: 1, sub: "Sistem Peredaran Darah", level: "C5 (Mengevaluasi)",
+                q: "Saat bermain sepeda, lutut Sinta tergores aspal dan berdarah. Namun, setelah dibersihkan dan didiamkan beberapa menit, darah berhenti keluar dan luka mulai mengering. Komponen darah manakah yang paling berjasa, dan apa risikonya jika tubuh kekurangan komponen tersebut?",
+                opts: [
+                    "Sel darah merah; risikonya kulit berubah menjadi warna biru selamanya",
+                    "Keping darah (trombosit); risikonya darah sulit membeku sehingga terjadi perdarahan berkepanjangan saat terluka",
+                    "Plasma darah; risikonya tulang lutut menjadi rapuh dan mudah patah",
+                    "Sel darah putih; risikonya oksigen tidak bisa masuk ke paru-paru",
+                    "Hemoglobin; risikonya makanan tidak bisa dicerna di usus halus"
+                ],
+                ans: 1,
+                exp: "Keping darah (trombosit) berperan membentuk benang-benang fibrin untuk menutup luka dan membekukan darah. Kekurangan trombosit membuat perdarahan sulit berhenti."
+            },
+            {
+                id: 13, bab: 1, sub: "Sistem Peredaran Darah", level: "C6 (Memprediksi)",
+                q: "Pak Rudi jarang berolahraga dan setiap hari mengonsumsi makanan berlemak jenuh tinggi. Akibatnya, dinding dalam pembuluh nadinya menyempit karena timbunan plak kolesterol. Prediksikan dampak paling berbahaya bagi organ jantung Pak Rudi!",
+                opts: [
+                    "Jantung bekerja lebih santai karena saluran darah menjadi lebih ramping",
+                    "Aliran darah terhambat sehingga tekanan darah meningkat (hipertensi) dan jantung berisiko mengalami serangan jantung koroner",
+                    "Pembuluh darah berubah menjadi tulang rawan yang sangat kuat",
+                    "Paru-paru berhenti menghasilkan karbon dioksida saat tidur",
+                    "Kadar sel darah putih meningkat pesat sehingga tubuh kebal dari segala penyakit"
+                ],
+                ans: 1,
+                exp: "Penyempitan pembuluh nadi (aterosklerosis) memaksa jantung memompa lebih keras (hipertensi). Jika pembuluh darah yang memasok oksigen ke otot jantung tersumbat, dapat terjadi serangan jantung."
+            },
+            {
+                id: 14, bab: 1, sub: "Sistem Peredaran Darah", level: "C4 (Menganalisis)",
+                q: "Bandingkan kandungan gas pada darah yang mengalir dari seluruh tubuh menuju serambi kanan dengan darah yang mengalir dari paru-paru menuju serambi kiri!",
+                opts: [
+                    "Keduanya sama-sama kaya karbon dioksida karena belum melewati lambung",
+                    "Darah menuju serambi kanan kaya karbon dioksida, sedangkan darah dari paru-paru menuju serambi kiri kaya oksigen",
+                    "Darah menuju serambi kanan kaya oksigen, sedangkan darah dari paru-paru kaya karbon dioksida",
+                    "Keduanya tidak mengandung gas apa pun, melainkan hanya air dan gula",
+                    "Darah dari paru-paru hanya mengandung nitrogen untuk mendinginkan jantung"
+                ],
+                ans: 1,
+                exp: "Darah dari seluruh tubuh telah menyerahkan oksigen ke sel dan membawa sisa CO2 menuju serambi kanan. Di paru-paru, CO2 dilepas dan O2 diikat, lalu darah kaya O2 mengalir ke serambi kiri."
+            },
+            {
+                id: 15, bab: 1, sub: "Sistem Peredaran Darah", level: "C5 (Mengevaluasi)",
+                q: "Dalam praktikum IPAS, Edo mengukur denyut nadinya saat duduk tenang sebesar 76 kali/menit. Setelah melompat tali selama 2 menit, denyut nadinya naik menjadi 124 kali/menit. Kesimpulan paling tepat dari data tersebut adalah...",
+                opts: [
+                    "Edo mengalami kelainan jantung karena denyut nadinya berubah-ubah",
+                    "Peningkatan aktivitas fisik membuat jantung memompa darah lebih cepat agar pasokan oksigen dan sari makanan ke otot terpenuhi",
+                    "Melompat tali membuat pembuluh darah vena terputus sementara",
+                    "Denyut nadi hanya dipengaruhi oleh suhu ruangan, bukan gerakan tubuh",
+                    "Saat melompat, paru-paru berhenti bekerja sehingga digantikan oleh denyut nadi"
+                ],
+                ans: 1,
+                exp: "Frekuensi denyut nadi sebanding dengan denyut jantung. Saat berolahraga, otot membutuhkan lebih banyak oksigen dan energi, sehingga jantung berdetak lebih cepat untuk mengalirkan darah."
+            },
+
+            // Subbab D: Sistem Gerak (16 - 20)
+            {
+                id: 16, bab: 1, sub: "Sistem Gerak", level: "C6 (Memprediksi)",
+                q: "Tono memiliki kebiasaan duduk membungkuk ke depan saat bermain gawai dan belajar di meja yang terlalu rendah selama bertahun-tahun. Kelainan tulang belakang apakah yang berisiko dialaminya, dan bagaimana pencegahannya?",
+                opts: [
+                    "Skoliosis; dicegah dengan selalu membawa tas berat di satu bahu saja",
+                    "Kifosis (tulang belakang melengkung ke belakang); dicegah dengan duduk tegak dan mengatur tinggi meja sesuai postur tubuh",
+                    "Lordosis; dicegah dengan tidur tanpa bantal di lantai yang basah",
+                    "Osteoporosis; dicegah dengan tidak pernah berolahraga sama sekali",
+                    "Rakitis; dicegah dengan menghindari sinar matahari pagi"
+                ],
+                ans: 1,
+                exp: "Kebiasaan duduk membungkuk secara terus-menerus dapat menyebabkan kifosis (punggung bungkuk). Pencegahannya adalah membiasakan posisi duduk tegak dan ergonomi meja/kursi yang sesuai."
+            },
+            {
+                id: 17, bab: 1, sub: "Sistem Gerak", level: "C4 (Menganalisis)",
+                q: "Ketika kita mengangkat tas sekolah, otot bisep di lengan atas berkontraksi (memendek dan mengembung) sementara otot trisep berelaksasi sehingga lengan bawah terangkat. Mengapa dalam sistem gerak, otot disebut alat gerak aktif sedangkan tulang disebut alat gerak pasif?",
+                opts: [
+                    "Karena tulang lebih lunak daripada otot saat disentuh",
+                    "Karena otot memiliki kemampuan berkontraksi dan berelaksasi untuk menggerakkan tulang, sedangkan tulang tidak dapat bergerak sendiri tanpa tarikan otot",
+                    "Karena tulang hanya ada di kaki, sedangkan otot ada di seluruh tubuh",
+                    "Karena otot terbuat dari kalsium yang keras, sedangkan tulang terbuat dari air",
+                    "Karena tulang hanya berfungsi saat kita tidur di malam hari"
+                ],
+                ans: 1,
+                exp: "Otot disebut alat gerak aktif karena mampu berkontraksi (memendek) dan berelaksasi (memanjang) sehingga menarik tulang yang melekat padanya. Tulang tidak bisa bergerak sendiri tanpa bantuan otot."
+            },
+            {
+                id: 18, bab: 1, sub: "Sistem Gerak", level: "C5 (Mengevaluasi)",
+                q: "Sendi pada bahu merupakan sendi peluru yang dapat bergerak ke segala arah, sedangkan sendi pada lutut merupakan sendi engsel yang hanya bergerak satu arah. Evaluasilah apa yang akan terjadi pada tubuh manusia jika sendi lutut diganti menjadi sendi peluru!",
+                opts: [
+                    "Manusia dapat berlari sepuluh kali lebih cepat tanpa pernah lelah",
+                    "Kaki menjadi tidak stabil dan sulit menopang berat badan saat berdiri atau berjalan karena lutut bisa menekuk ke segala arah",
+                    "Tulang paha akan menyatu dengan tulang betis sehingga tidak bisa ditekuk",
+                    "Manusia tidak lagi memerlukan otot betis untuk melompat",
+                    "Lutut akan menjadi lebih kaku seperti sendi mati pada tengkorak"
+                ],
+                ans: 1,
+                exp: "Sendi engsel pada lutut membatasi gerakan hanya satu arah (ke belakang) agar tungkai kokoh menopang berat tubuh saat berdiri dan berjalan. Jika berbentuk sendi peluru, lutut akan mudah goyah atau terkilir."
+            },
+            {
+                id: 19, bab: 1, sub: "Sistem Gerak", level: "C5 (Mengevaluasi)",
+                q: "Osteoporosis (pengeroposan tulang) banyak dialami pada usia lanjut. Kombinasi kebiasaan sejak usia SD manakah yang paling efektif untuk menabung kepadatan tulang sejak dini?",
+                opts: [
+                    "Minum minuman bersoda setiap hari dan menghindari aktivitas di luar rumah",
+                    "Mengonsumsi makanan kaya kalsium (susu, ikan teri, sayuran hijau), berjemur sinar matahari pagi untuk vitamin D, dan rutin berolahraga",
+                    "Makan makanan tinggi gula dan tidur lebih dari 14 jam sehari",
+                    "Mengangkat beban yang melebihi berat badan sendiri setiap hari",
+                    "Mengurangi minum air putih agar tulang tidak menjadi lunak"
+                ],
+                ans: 1,
+                exp: "Kalsium adalah bahan utama pembentuk tulang, vitamin D (dibantu sinar matahari pagi) membantu penyerapan kalsium, dan olahraga teratur merangsang penguatan massa tulang."
+            },
+            {
+                id: 20, bab: 1, sub: "Sistem Gerak", level: "C4 (Menganalisis)",
+                q: "Kita dapat dengan mudah memerintahkan tangan untuk menulis atau berhenti menulis, tetapi kita tidak bisa memerintahkan jantung berhenti berdetak atau lambung berhenti mencerna. Mengapa perbedaan kendali tersebut terjadi?",
+                opts: [
+                    "Otot tangan tidak memiliki saraf, sedangkan jantung memiliki banyak tulang",
+                    "Otot tangan adalah otot lurik yang bekerja secara sadar, sedangkan otot jantung dan otot polos pada lambung bekerja secara tidak sadar (otomatis)",
+                    "Jantung dan lambung tidak memiliki jaringan otot sama sekali",
+                    "Otak hanya terhubung dengan tangan dan kaki, tidak terhubung dengan organ dalam",
+                    "Otot polos hanya bekerja jika kita sedang tidur pulas"
+                ],
+                ans: 1,
+                exp: "Otot lurik (rangka) bekerja di bawah kesadaran kita. Sebaliknya, otot jantung dan otot polos (organ dalam seperti lambung/usus) bekerja secara involunter (tidak sadar) terus-menerus untuk menjaga kelangsungan hidup."
+            },
+
+            // =========================================================================
+            // BAB 2: EKOSISTEM DI SEKITARKU (SOAL 21 - 35)
+            // =========================================================================
+            // Subbab A: Ekosistem dan Komponennya (21 - 25)
+            {
+                id: 21, bab: 2, sub: "Ekosistem & Komponennya", level: "C6 (Memprediksi)",
+                q: "Di sebuah kolam ikan terdapat ikan nila, tumbuhan hidrila di dasar kolam, air, dan cahaya matahari. Tiba-tiba permukaan kolam tertutup rapat oleh eceng gondok yang tumbuh tak terkendali. Prediksikan dampak paling serius terhadap tumbuhan dasar kolam dan ikan!",
+                opts: [
+                    "Tumbuhan dasar kolam tumbuh makin subur karena terlindung dari hujan",
+                    "Cahaya matahari terhalang masuk ke air sehingga tumbuhan dasar gagal berfotosintesis, kadar oksigen terlarut menurun, dan ikan terancam mati",
+                    "Air kolam berubah menjadi sangat asin sehingga ikan berubah menjadi ikan laut",
+                    "Suhu air kolam meningkat drastis hingga mendidih karena tertutupi daun",
+                    "Ikan menjadi lebih sehat karena tidak perlu lagi menghirup oksigen dari air"
+                ],
+                ans: 1,
+                exp: "Cahaya matahari adalah komponen abiotik vital untuk fotosintesis tumbuhan air. Jika terhalang eceng gondok, tumbuhan dasar mati, suplai oksigen terlarut dalam air anjlok, dan ikan kekurangan oksigen."
+            },
+            {
+                id: 22, bab: 2, sub: "Ekosistem & Komponennya", level: "C4 (Menganalisis)",
+                q: "Jamur dan bakteri pengurai (dekomposer) sering dianggap kecil dan tidak terlihat. Analisislah apa yang akan terjadi pada ekosistem hutan jika seluruh pengurai tiba-tiba musnah!",
+                opts: [
+                    "Hutan menjadi lebih bersih dan pohon-pohon tumbuh lebih cepat",
+                    "Bangkai hewan dan daun gugur akan menumpuk tanpa membusuk serta tanah kehilangan unsur hara sehingga tumbuhan mati perlahan",
+                    "Hewan pemakan daging akan beralih memakan batu dan pasir",
+                    "Air hujan tidak akan pernah turun lagi di wilayah hutan tersebut",
+                    "Populasi serangga langsung berubah menjadi produsen baru"
+                ],
+                ans: 1,
+                exp: "Dekomposer menguraikan sisa makhluk hidup menjadi zat hara (mineral) yang menyuburkan tanah bagi produsen. Tanpa pengurai, sampah organik menumpuk dan siklus nutrisi terputus."
+            },
+            {
+                id: 23, bab: 2, sub: "Ekosistem & Komponennya", level: "C5 (Mengevaluasi)",
+                q: "Ekosistem sawah (ekosistem buatan) hanya ditanami satu jenis tumbuhan utama yaitu padi, sedangkan ekosistem hutan hujan tropis (ekosistem alami) memiliki ratusan jenis tumbuhan dan hewan. Mengapa ekosistem hutan lebih tahan terhadap serangan hama dibandingkan sawah?",
+                opts: [
+                    "Karena di hutan tidak ada serangga pemakan daun sama sekali",
+                    "Karena keanekaragaman hayati di hutan tinggi sehingga jaring-jaring makanannya kompleks dan terdapat banyak predator alami pengendali hama",
+                    "Karena petani selalu menyemprot hutan dengan pestisida setiap minggu",
+                    "Karena pohon di hutan tidak membutuhkan air dan sinar matahari",
+                    "Karena suhu di hutan selalu di bawah titik beku sehingga hama mati"
+                ],
+                ans: 1,
+                exp: "Semakin tinggi keanekaragaman makhluk hidup dalam suatu ekosistem, semakin kompleks jaring-jaring makanannya, sehingga jika satu spesies hama meningkat, predator alaminya akan segera mengendalikannya."
+            },
+            {
+                id: 24, bab: 2, sub: "Ekosistem & Komponennya", level: "C6 (Memprediksi)",
+                q: "Budi menanam kaktus gurun di pot yang tanahnya selalu tergenang air setiap hari dan diletakkan di sudut kamar yang gelap. Prediksikan kondisi kaktus setelah dua minggu beserta alasannya!",
+                opts: [
+                    "Kaktus tumbuh sangat tinggi dan menghasilkan buah yang manis",
+                    "Akar dan batang kaktus akan membusuk karena tidak sesuai dengan komponen abiotik habitat aslinya yang kering dan kaya cahaya matahari",
+                    "Duri kaktus akan berubah menjadi insang agar bisa bernapas di air",
+                    "Kaktus tetap segar selamanya karena tidak membutuhkan cahaya matahari",
+                    "Kaktus akan berubah menjadi tumbuhan teratai dalam waktu singkat"
+                ],
+                ans: 1,
+                exp: "Setiap makhluk hidup beradaptasi dengan komponen abiotik habitatnya. Kaktus beradaptasi di lingkungan kering dan terik; kelebihan air dan kurang cahaya akan menyebabkan pembusukan akar."
+            },
+            {
+                id: 25, bab: 2, sub: "Ekosistem & Komponennya", level: "C4 (Menganalisis)",
+                q: "Siswa kelas 5 membuat terarium tertutup dari toples kaca bening berisi tanah lembap, tanaman lumut, pakis kecil, dan beberapa kutu kayu, lalu meletakkannya di dekat jendela. Mengapa ekosistem mini tersebut tetap dapat bertahan hidup tanpa dibuka?",
+                opts: [
+                    "Karena kaca toples mampu menghasilkan oksigen dan makanan sendiri",
+                    "Terjadi siklus saling mendukung: tanaman berfotosintesis menghasilkan oksigen bagi hewan, hewan menghasilkan CO2 bagi tanaman, dan uap air mengembun kembali ke tanah",
+                    "Karena tanaman dan serangga di dalam toples berhenti bernapas saat ditutup",
+                    "Karena tanah di dalam toples berubah menjadi air setiap malam hari",
+                    "Karena kutu kayu tidak membutuhkan oksigen untuk bertahan hidup"
+                ],
+                ans: 1,
+                exp: "Terarium tertutup adalah contoh ekosistem mini yang seimbang: cahaya matahari menembus kaca untuk fotosintesis (menghasilkan O2), respirasi menghasilkan CO2, dan terjadi siklus air mini di dalam toples."
+            },
+
+            // Subbab B: Hubungan Antarkomponen dalam Ekosistem (26 - 30)
+            {
+                id: 26, bab: 2, sub: "Hubungan Antarkomponen", level: "C6 (Memprediksi)",
+                q: "Perhatikan rantai makanan di sawah: Padi → Tikus → Ular → Elang. Karena merasa takut, warga desa memburu dan membasmi hampir seluruh ular di sawah. Prediksikan dua dampak berantai yang akan terjadi!",
+                opts: [
+                    "Populasi tikus menurun drastis dan hasil panen padi meningkat pesat",
+                    "Populasi tikus meledak tak terkendali sehingga gagal panen padi, serta populasi elang menurun karena kekurangan makanan",
+                    "Elang akan beralih memakan batang padi sehingga sawah makin subur",
+                    "Tikus akan berubah menjadi predator yang memburu burung elang",
+                    "Tidak ada perubahan apa pun karena padi tidak dimakan oleh ular"
+                ],
+                ans: 1,
+                exp: "Ular adalah predator alami tikus dan sumber makanan bagi elang. Jika ular dibasmi, tikus berkembang biak tak terkendali (merusak padi), sementara elang kehilangan sumber mangsanya."
+            },
+            {
+                id: 27, bab: 2, sub: "Hubungan Antarkomponen", level: "C4 (Menganalisis)",
+                q: "Tumbuhan tali putri menempel pada tanaman teh-tehan dan menyerap sari makanan hingga tanaman teh-tehan mati, sedangkan bunga anggrek menempel pada batang pohon mangga hanya untuk mendapat sinar matahari tanpa mengambil nutrisi pohon mangga. Evaluasilah perbedaan interaksi keduanya!",
+                opts: [
+                    "Keduanya sama-sama simbiosis mutualisme karena saling menguntungkan",
+                    "Tali putri dan teh-tehan adalah simbiosis parasitisme, sedangkan anggrek dan pohon mangga adalah simbiosis komensalisme",
+                    "Tali putri adalah komensalisme, sedangkan anggrek adalah parasitisme",
+                    "Keduanya merupakan bentuk kompetisi memperebutkan air hujan",
+                    "Anggrek dan pohon mangga adalah hubungan predasi"
+                ],
+                ans: 1,
+                exp: "Parasitisme menguntungkan satu pihak dan merugikan inangnya (tali putri). Komensalisme menguntungkan satu pihak tanpa merugikan maupun menguntungkan pihak lain (anggrek pada pohon mangga)."
+            },
+            {
+                id: 28, bab: 2, sub: "Hubungan Antarkomponen", level: "C4 (Menganalisis)",
+                q: "Di sebuah padang sabana, singa dan hyena sama-sama berburu zebra. Saat kemarau panjang membuat rumput kering dan jumlah zebra menyusut drastis, jenis interaksi apakah yang semakin tajam antara singa dan hyena?",
+                opts: [
+                    "Simbiosis mutualisme karena mereka saling berbagi daging zebra",
+                    "Kompetisi (persaingan) memperebutkan sumber makanan yang semakin terbatas",
+                    "Simbiosis komensalisme karena hyena tidak terpengaruh oleh jumlah zebra",
+                    "Simbiosis parasitisme karena singa hidup di dalam tubuh hyena",
+                    "Dekomposisi karena keduanya menguraikan rumput kering menjadi tanah"
+                ],
+                ans: 1,
+                exp: "Ketika dua spesies berbeda membutuhkan sumber daya (mangsa) yang sama sementara ketersediaannya menipis, terjadi interaksi kompetisi (persaingan) yang ketat."
+            },
+            {
+                id: 29, bab: 2, sub: "Hubungan Antarkomponen", level: "C5 (Mengevaluasi)",
+                q: "Dalam sebuah jaring-jaring makanan: Tumbuhan dimakan belalang dan tikus; belalang dimakan katak dan burung pipit; katak dimakan ular dan elang; tikus juga dimakan ular dan elang. Jika populasi katak menurun drastis akibat pencemaran air, mengapa populasi elang tidak langsung punah?",
+                opts: [
+                    "Karena elang dapat berfotosintesis menggunakan sinar matahari",
+                    "Karena dalam jaring-jaring makanan, elang masih memiliki sumber makanan alternatif lain seperti tikus dan ular",
+                    "Karena elang tidak perlu makan selama satu tahun penuh",
+                    "Karena elang akan langsung memakan tumbuhan hijau di sawah",
+                    "Karena katak bukan bagian dari makanan elang"
+                ],
+                ans: 1,
+                exp: "Berbeda dengan rantai makanan tunggal, jaring-jaring makanan memiliki banyak jalur energi. Elang tetap bisa bertahan hidup dengan memangsa alternatif lain seperti tikus atau ular."
+            },
+            {
+                id: 30, bab: 2, sub: "Hubungan Antarkomponen", level: "C5 (Mengevaluasi)",
+                q: "Dalam piramida makanan di ekosistem sawah, bagian dasar (produsen/padi) selalu digambarkan paling lebar, sedangkan bagian puncak (elang) paling sempit. Mengapa jumlah populasi produsen harus jauh lebih banyak daripada konsumen puncak?",
+                opts: [
+                    "Karena ukuran tubuh padi lebih besar daripada ukuran tubuh elang",
+                    "Karena energi berkurang di setiap perpindahan tingkat trofik (dipakai untuk aktivitas hidup dan panas), sehingga produsen harus menyediakan energi melimpah bagi tingkat di atasnya",
+                    "Karena elang berkembang biak lebih cepat daripada pertumbuhan padi",
+                    "Karena produsen memakan konsumen puncak saat malam hari",
+                    "Karena piramida hanya dibuat agar gambarnya terlihat rapi di buku"
+                ],
+                ans: 1,
+                exp: "Hanya sekitar 10% energi yang diteruskan ke tingkat trofik berikutnya. Oleh karena itu, biomassa dan jumlah produsen di dasar piramida harus jauh lebih besar agar seluruh ekosistem mendapat cukup energi."
+            },
+
+            // Subbab C: Keseimbangan Ekosistem (31 - 35)
+            {
+                id: 31, bab: 2, sub: "Keseimbangan Ekosistem", level: "C4 (Menganalisis)",
+                q: "Penebangan hutan secara liar (deforestasi) di kawasan pegunungan hulu sungai membuat lereng menjadi gundul. Analisislah rangkaian bencana ekologis yang paling mungkin terjadi di wilayah hilir saat musim hujan tiba!",
+                opts: [
+                    "Air sungai menjadi sangat jernih dan ikan berkembang biak dua kali lipat",
+                    "Hilangnya akar pohon penyimpan air menyebabkan erosi tanah, tanah longsor di hulu, serta banjir bandang berlumpur di hilir",
+                    "Suhu udara di kota hilir menjadi sedingin salju sepanjang tahun",
+                    "Terumbu karang di laut tumbuh makin luas karena tertutup lumpur",
+                    "Ketersediaan mata air bersih meningkat drastis saat musim kemarau"
+                ],
+                ans: 1,
+                exp: "Akar pohon berfungsi mengikat tanah dan meresapkan air hujan ke dalam tanah. Tanpa pepohonan, air hujan langsung mengalir deras di permukaan mengikis tanah (erosi) dan memicu banjir bandang di hilir."
+            },
+            {
+                id: 32, bab: 2, sub: "Keseimbangan Ekosistem", level: "C5 (Mengevaluasi)",
+                q: "Sebagian petani menyemprotkan pestisida kimia dosis tinggi secara terus-menerus untuk membasmi hama wereng. Meskipun hama cepat mati, mengapa para ahli lingkungan mengevaluasi tindakan ini sebagai ancaman bagi keseimbangan ekosistem sawah?",
+                opts: [
+                    "Pestisida membuat batang padi tumbuh terlalu tinggi hingga sulit dipanen",
+                    "Pestisida juga membunuh musuh alami hama (seperti laba-laba dan capung), mencemari tanah serta air, dan memicu hama menjadi kebal",
+                    "Pestisida mengubah air sawah menjadi pupuk kompos alami",
+                    "Wereng akan berubah menjadi cacing tanah yang menyuburkan sawah",
+                    "Pestisida kimia tidak memiliki pengaruh apa pun terhadap serangga lain"
+                ],
+                ans: 1,
+                exp: "Pestisida kimia bersifat tidak selektif: ia ikut memusnahkan serangga bermanfaat (penyerbuk dan predator alami), meninggalkan residu beracun di tanah/air, dan mendorong resistensi hama."
+            },
+            {
+                id: 33, bab: 2, sub: "Keseimbangan Ekosistem", level: "C6 (Memprediksi)",
+                q: "Pembuangan limbah deterjen dan sisa pupuk kimia ke sungai menyebabkan pertumbuhan alga/ganggang meledak hebat hingga menutupi air (eutrofikasi). Prediksikan akibat jangka panjangnya terhadap kehidupan ikan di sungai tersebut!",
+                opts: [
+                    "Ikan menjadi lebih gemuk karena memakan busa deterjen",
+                    "Saat alga mati dan membusuk, bakteri pengurai menghabiskan oksigen terlarut dalam air sehingga banyak ikan mati lemas",
+                    "Air sungai berubah menjadi air mineral yang aman langsung diminum",
+                    "Kadar oksigen dalam air meningkat hingga 100% sepanjang malam",
+                    "Populasi ikan predator bertambah pesat karena air menjadi keruh"
+                ],
+                ans: 1,
+                exp: "Ledakan alga menghalangi sinar matahari dan saat alga mati secara massal, proses pembusukan oleh bakteri menyedot sebagian besar oksigen terlarut di air, menyebabkan kematian massal ikan."
+            },
+            {
+                id: 34, bab: 2, sub: "Keseimbangan Ekosistem", level: "C5 (Mengevaluasi)",
+                q: "Terumbu karang di pesisir rusak parah akibat oknum yang menangkap ikan menggunakan bom ikan dan pukat harimau. Evaluasilah solusi paling bijak yang menjaga keseimbangan ekosistem laut sekaligus keberlanjutan ekonomi nelayan!",
+                opts: [
+                    "Melarang seluruh nelayan melaut selamanya tanpa memberi pekerjaan lain",
+                    "Menggunakan alat tangkap ramah lingkungan (pancing/jaring bermata besar), melakukan transplantasi terumbu karang, dan menetapkan zona konservasi laut",
+                    "Membiarkan penggunaan bom ikan asalkan hanya dilakukan di malam hari",
+                    "Mengganti terumbu karang asli dengan tumpukan sampah plastik",
+                    "Menangkap seluruh ikan kecil agar tidak dimakan oleh ikan besar"
+                ],
+                ans: 1,
+                exp: "Pengelolaan berkelanjutan memadukan perlindungan habitat (transplantasi karang & zona konservasi) dengan alat tangkap ramah lingkungan agar ikan tetap berkembang biak dan nelayan tetap sejahtera."
+            },
+            {
+                id: 35, bab: 2, sub: "Keseimbangan Ekosistem", level: "C4 (Menganalisis)",
+                q: "Kemarau ekstrem akibat perubahan iklim membuat sebuah danau menyusut drastis hingga hampir kering. Bagaimana perubahan faktor abiotik (air) tersebut memengaruhi keseimbangan jaring-jaring makanan di sekitar danau?",
+                opts: [
+                    "Hanya ikan yang terdampak, sedangkan burung bangau dan tumbuhan tepi danau tidak terpengaruh",
+                    "Menyusutnya air mematikan tumbuhan air dan ikan, sehingga burung pemakan ikan kehilangan mangsa dan terpaksa bermigrasi atau mati",
+                    "Ikan akan langsung beradaptasi hidup di atas pohon kering",
+                    "Keseimbangan ekosistem justru semakin baik karena tidak ada air",
+                    "Tumbuhan air akan berubah menjadi hewan pemakan serangga"
+                ],
+                ans: 1,
+                exp: "Komponen abiotik dan biotik saling bergantung erat. Kekeringan menghancurkan habitat produsen air dan ikan, yang langsung memutus rantai makanan bagi konsumen di atasnya (seperti burung air)."
+            },
+
+            // =========================================================================
+            // BAB 3: MENGENAL BUNYI DAN CAHAYA (SOAL 36 - 50)
+            // =========================================================================
+            // Subbab A: Bunyi (36 - 42)
+            {
+                id: 36, bab: 3, sub: "Bunyi", level: "C4 (Menganalisis)",
+                q: "Dua astronot sedang memperbaiki satelit di luar angkasa yang merupakan ruang hampa udara. Jika radio komunikasi mereka rusak dan mereka saling berteriak dari jarak dekat, mengapa mereka tidak dapat mendengar suara satu sama lain?",
+                opts: [
+                    "Karena helm astronot menyerap semua cahaya matahari",
+                    "Karena bunyi memerlukan medium (zat perantara) seperti udara, zat cair, atau zat padat untuk merambat, sedangkan luar angkasa hampa udara",
+                    "Karena pita suara manusia berhenti bergetar saat berada di luar angkasa",
+                    "Karena suhu di luar angkasa terlalu dingin untuk menggerakkan gendang telinga",
+                    "Karena suara mereka langsung memantul ke bulan sebelum sampai ke telinga"
+                ],
+                ans: 1,
+                exp: "Bunyi adalah gelombang mekanik yang mutlak membutuhkan medium (padat, cair, atau gas) untuk merambat. Di ruang hampa tidak ada partikel perantara sehingga bunyi tidak dapat merambat."
+            },
+            {
+                id: 37, bab: 3, sub: "Bunyi", level: "C5 (Mengevaluasi)",
+                q: "Dalam percobaan aman di halaman sekolah, Edo mengetuk ujung pipa besi sepanjang 10 meter sementara Tika menempelkan telinganya di ujung pipa lainnya. Tika mendengar dua kali bunyi ketukan: pertama melalui pipa besi, baru kemudian melalui udara. Evaluasilah penyebab perbedaan waktu tersebut!",
+                opts: [
+                    "Udara tidak bisa menghantarkan bunyi ketukan logam",
+                    "Partikel penyusun zat padat (besi) jauh lebih rapat dibandingkan udara sehingga bunyi merambat paling cepat melalui zat padat",
+                    "Pipa besi menghasilkan gema yang mempercepat kecepatan angin",
+                    "Bunyi merambat paling cepat di udara, tetapi terhalang oleh sinar matahari",
+                    "Telinga manusia hanya peka terhadap suara yang berasal dari logam"
+                ],
+                ans: 1,
+                exp: "Urutan kecepatan perambatan bunyi dari yang tercepat adalah: zat padat > zat cair > gas (udara), karena susunan partikel zat padat sangat rapat sehingga getaran cepat diteruskan."
+            },
+            {
+                id: 38, bab: 3, sub: "Bunyi", level: "C5 (Mengevaluasi)",
+                q: "Dinding dan lantai di dalam studio musik serta gedung bioskop selalu dilapisi bahan berpori seperti busa peredam, karpet tebal, atau kain beludru. Mengapa perancang ruangan memilih bahan-bahan tersebut?",
+                opts: [
+                    "Agar suara dari pengeras suara memantul berkali-kali sehingga makin keras",
+                    "Untuk menyerap gelombang bunyi agar tidak terjadi gaung (bunyi pantul yang datang bersamaan dengan bunyi asli sehingga suara menjadi tidak jelas)",
+                    "Agar ruangan menjadi kedap cahaya matahari dari luar",
+                    "Untuk mengubah bunyi infrasonik menjadi bunyi ultrasonik",
+                    "Agar suhu di dalam bioskop tetap hangat tanpa pendingin ruangan"
+                ],
+                ans: 1,
+                exp: "Bahan lunak dan berpori (karpet, busa, wol) bersifat menyerap bunyi sehingga mencegah terjadinya gaung/kerdam yang dapat mengganggu kejernihan suara di ruang tertutup."
+            },
+            {
+                id: 39, bab: 3, sub: "Bunyi", level: "C4 (Menganalisis)",
+                q: "Saat berteriak di sebuah aula kosong yang sempit, suara terdengar bergema kurang jelas (gaung). Namun saat berteriak menghadap tebing gunung yang jauh, suara pantulan terdengar lengkap dan jelas setelah kita selesai berteriak (gema). Faktor utama apakah yang membedakan terjadinya gaung dan gema?",
+                opts: [
+                    "Warna dinding aula dibandingkan warna batu tebing gunung",
+                    "Jarak antara sumber bunyi dengan bidang pemantul: gaung terjadi pada jarak dekat, sedangkan gema terjadi pada jarak yang jauh",
+                    "Ketinggian tempat di atas permukaan laut",
+                    "Jenis kelamin orang yang berteriak",
+                    "Waktu siang atau malam saat teriakan dilakukan"
+                ],
+                ans: 1,
+                exp: "Pada jarak pemantul yang dekat (aula), bunyi pantul tiba sebagian bersamaan dengan bunyi asli (gaung). Pada jarak jauh (tebing), bunyi pantul membutuhkan waktu lebih lama sehingga tiba utuh setelah bunyi asli selesai (gema)."
+            },
+            {
+                id: 40, bab: 3, sub: "Bunyi", level: "C6 (Memprediksi)",
+                q: "Sinta menyiapkan 3 gelas kaca identik: Gelas A diisi air hampir penuh, Gelas B diisi setengah, dan Gelas C diisi sangat sedikit air. Jika bibir ketiga gelas dipukul perlahan dengan sendok logam, gelas manakah yang menghasilkan nada paling tinggi (nyaring) dan mengapa?",
+                opts: [
+                    "Gelas A, karena air yang penuh membuat getaran gelas sangat cepat",
+                    "Gelas C, karena volume air yang sedikit membuat dinding gelas lebih bebas bergetar dengan frekuensi lebih tinggi",
+                    "Gelas B, karena air dan udara memiliki volume yang sama besar",
+                    "Ketiga gelas menghasilkan nada yang persis sama karena ukurannya identik",
+                    "Tidak ada gelas yang berbunyi karena air menyerap seluruh getaran sendok"
+                ],
+                ans: 1,
+                exp: "Saat gelas dipukul, yang bergetar adalah gelas beserta air di dalamnya. Semakin sedikit air (Gelas C), massa yang bergetar lebih ringan sehingga getaran lebih cepat (frekuensi tinggi) dan menghasilkan nada paling tinggi."
+            },
+            {
+                id: 41, bab: 3, sub: "Bunyi", level: "C4 (Menganalisis)",
+                q: "Kelelawar dapat terbang lincah di dalam gua yang gelap gulita tanpa menabrak dinding karena memanfaatkan ekolokasi menggunakan bunyi ultrasonik. Mengapa telinga manusia tidak dapat mendengar bunyi navigasi kelelawar tersebut?",
+                opts: [
+                    "Karena kelelawar hanya bersuara saat manusia sedang tidur",
+                    "Karena frekuensi bunyi ultrasonik di atas 20.000 Hz, melampaui batas pendengaran manusia (audiosonik: 20–20.000 Hz)",
+                    "Karena bunyi ultrasonik tidak bisa merambat melalui udara di dalam gua",
+                    "Karena suara kelelawar terlalu pelan dan frekuensinya di bawah 20 Hz",
+                    "Karena gendang telinga manusia hanya bisa menangkap suara dari alat musik"
+                ],
+                ans: 1,
+                exp: "Manusia hanya mampu mendengar bunyi audiosonik (20 Hz – 20.000 Hz). Bunyi ultrasonik memiliki frekuensi > 20.000 Hz sehingga hanya bisa didengar hewan tertentu seperti kelelawar dan lumba-lumba."
+            },
+            {
+                id: 42, bab: 3, sub: "Bunyi", level: "C5 (Mengevaluasi)",
+                q: "Di dekat rumah Riko sedang ada proyek pengeboran jalan yang menghasilkan suara bising sangat keras setiap hari. Jika tidak dilindungi, bagian telinga manakah yang paling berisiko rusak akibat getaran bunyi terlalu kuat, dan apa tindakan pencegahan terbaik?",
+                opts: [
+                    "Daun telinga akan lepas; dicegah dengan sering mengorek telinga",
+                    "Gendang telinga dan sel rambut di rumah siput (koklea) dapat rusak; dicegah dengan menutup jendela/peredam suara dan memakai pelindung telinga (earmuff/earplug)",
+                    "Tulang sanggurdi akan memanjang; dicegah dengan mendengarkan musik lebih keras lewat earphone",
+                    "Saluran Eustachius akan tersumbat; dicegah dengan berteriak lebih keras",
+                    "Saraf penglihatan akan terganggu; dicegah dengan memakai kacamata hitam"
+                ],
+                ans: 1,
+                exp: "Suara bising berkepanjangan menggetarkan gendang telinga secara ekstrem dan merusak reseptor pendengaran di koklea. Penggunaan pelindung telinga dan peredam ruang adalah langkah preventif yang tepat."
+            },
+
+            // Subbab B: Cahaya (43 - 50)
+            {
+                id: 43, bab: 3, sub: "Cahaya", level: "C4 (Menganalisis)",
+                q: "Saat memasukkan sendok logam ke dalam gelas kaca bening berisi air, sendok terlihat seolah-olah bengkok atau patah tepat di batas permukaan air. Sifat cahaya apakah yang menyebabkan peristiwa tersebut?",
+                opts: [
+                    "Cahaya dapat dipantulkan sempurna oleh logam sendok",
+                    "Cahaya dapat dibiaskan (dibelokkan) saat melewati dua medium dengan kerapatan optik berbeda, yaitu dari udara ke air",
+                    "Cahaya dapat diuraikan menjadi tujuh warna pelangi oleh gelas",
+                    "Cahaya tidak dapat menembus air yang jernih",
+                    "Cahaya melengkung mengikuti bentuk gelas yang bulat"
+                ],
+                ans: 1,
+                exp: "Pembiasan (refraksi) terjadi karena kecepatan cahaya berubah saat berpindah antara dua medium berbeda kerapatan (udara dan air), sehingga arah rambat cahaya membelok dan menimbulkan ilusi sendok patah."
+            },
+            {
+                id: 44, bab: 3, sub: "Cahaya", level: "C4 (Menganalisis)",
+                q: "Pada sore hari setelah hujan gerimis berhenti dan matahari bersinar cerah, tampak pelangi melengkung indah di langit. Analisislah proses optik yang terjadi sehingga cahaya matahari yang tampak putih berubah menjadi warna-warni pelangi!",
+                opts: [
+                    "Awan mencat langit menggunakan uap air berwarna-warni",
+                    "Cahaya putih matahari mengalami pembiasan dan penguraian (dispersi) saat melewati butiran-butiran air hujan di udara yang bertindak seperti prisma",
+                    "Cahaya matahari dipantulkan oleh warna daun-daun pohon di bumi",
+                    "Butiran air hujan menghalangi cahaya sehingga muncul bayangan berwarna",
+                    "Cahaya matahari berhenti merambat lurus saat terkena angin sore"
+                ],
+                ans: 1,
+                exp: "Cahaya putih matahari tersusun atas spektrum warna (mejikuhibiniu). Saat melewati tetesan air hujan, cahaya dibiaskan dan diuraikan (dispersi) menjadi pita warna pelangi."
+            },
+            {
+                id: 45, bab: 3, sub: "Cahaya", level: "C5 (Mengevaluasi)",
+                q: "Kaca spion pada sepeda motor dan mobil selalu dibuat menggunakan cermin cembung, bukan cermin datar. Evaluasilah alasan keselamatan di balik pemilihan cermin cembung tersebut!",
+                opts: [
+                    "Cermin cembung memperbesar bayangan kendaraan di belakang hingga memenuhi seluruh kaca",
+                    "Cermin cembung menghasilkan bayangan maya, tegak, dan diperkecil sehingga jangkauan pandang pengendara ke belakang menjadi jauh lebih luas",
+                    "Cermin cembung membalik bayangan kendaraan menjadi terbalik agar pengendara fokus",
+                    "Cermin cembung tidak memantulkan cahaya lampu kendaraan di malam hari",
+                    "Cermin datar tidak dapat memantulkan bayangan benda yang sedang bergerak"
+                ],
+                ans: 1,
+                exp: "Sifat cermin cembung yang selalu membentuk bayangan maya, tegak, dan diperkecil membuat area jalan di belakang yang tertangkap cermin jauh lebih lebar, mengurangi titik buta (blind spot)."
+            },
+            {
+                id: 46, bab: 3, sub: "Cahaya", level: "C4 (Menganalisis)",
+                q: "Saat listrik padam di malam hari, Budi menyalakan senter ke arah dinding putih, lalu meletakkan tangannya di depan lampu senter sehingga terbentuk bayangan tangan yang gelap dan jelas di dinding. Dua sifat cahaya apakah yang dibuktikan dari kegiatan Budi?",
+                opts: [
+                    "Cahaya dapat dibiaskan dan diuraikan",
+                    "Cahaya merambat lurus dan tidak dapat menembus benda gelap (tak tembus cahaya)",
+                    "Cahaya dapat menembus semua benda dan memantul tidak teratur",
+                    "Cahaya membutuhkan udara untuk merambat dan dapat diserap dinding",
+                    "Cahaya selalu berbelok menghindari tangan manusia"
+                ],
+                ans: 1,
+                exp: "Bayangan gelap terbentuk karena cahaya merambat lurus dan terhalang oleh benda gelap (tangan) yang tidak dapat ditembus cahaya."
+            },
+            {
+                id: 47, bab: 3, sub: "Cahaya", level: "C5 (Mengevaluasi)",
+                q: "Ketika memeriksa gigi pasien, dokter gigi menggunakan cermin kecil bertangkai yang permukaannya melengkung ke dalam (cermin cekung). Mengapa cermin cekung sangat membantu pekerjaan dokter gigi?",
+                opts: [
+                    "Karena cermin cekung selalu memperkecil ukuran gigi agar mudah dilihat",
+                    "Karena ketika diletakkan dekat dengan gigi, cermin cekung menghasilkan bayangan yang tegak dan diperbesar sehingga lubang kecil pada gigi tampak jelas",
+                    "Karena cermin cekung dapat membunuh kuman penyebab gigi berlubang",
+                    "Karena cermin cekung menyerap cahaya lampu agar mulut pasien gelap",
+                    "Karena cermin cekung membuat bayangan gigi tampak terbalik dan menjauh"
+                ],
+                ans: 1,
+                exp: "Pada jarak dekat (antara cermin dan titik fokus), cermin cekung membentuk bayangan maya, tegak, dan diperbesar, sangat ideal untuk mengamati detail kecil seperti gigi berlubang."
+            },
+            {
+                id: 48, bab: 3, sub: "Cahaya", level: "C5 (Mengevaluasi)",
+                q: "Kakek mengalami kesulitan saat membaca tulisan kecil di koran pada jarak baca normal, sehingga beliau harus menjauhkan koran atau memakai kacamata berlensa cembung (plus). Evaluasilah gangguan mata yang dialami kakek serta fungsi lensa cembung tersebut!",
+                opts: [
+                    "Miopi (rabun jauh); lensa cembung memajukan bayangan agar jatuh di depan retina",
+                    "Hipermetropi (rabun dekat) atau presbiopi; lensa cembung membantu mengumpulkan cahaya agar bayangan jatuh tepat di retina",
+                    "Buta warna; lensa cembung memisahkan warna hitam dan putih pada koran",
+                    "Katarak; lensa cembung membersihkan kotoran di permukaan kornea",
+                    "Silindris; lensa cembung mencegah cahaya matahari masuk ke pupil"
+                ],
+                ans: 1,
+                exp: "Pada rabun dekat (hipermetropi) atau mata tua (presbiopi), bayangan benda dekat jatuh di belakang retina. Lensa cembung (positif) bersifat mengumpulkan cahaya sehingga bayangan maju tepat ke retina."
+            },
+            {
+                id: 49, bab: 3, sub: "Cahaya", level: "C4 (Menganalisis)",
+                q: "Saat baru masuk dari lapangan sekolah yang sangat terik ke dalam ruang kelas yang agak redup, mata kita sempat gelap sesaat lalu beberapa detik kemudian dapat melihat meja dan kursi dengan jelas. Bagian mata manakah yang bekerja melakukan adaptasi tersebut?",
+                opts: [
+                    "Kornea menebal untuk menyimpan cahaya matahari dari lapangan",
+                    "Iris mengatur pupil agar melebar di ruangan redup sehingga lebih banyak cahaya dapat masuk ke dalam mata",
+                    "Kelopak mata menutup otomatis agar cahaya tidak keluar dari retina",
+                    "Alis mata memantulkan cahaya dari jendela ke arah lensa mata",
+                    "Retina berpindah ke bagian depan bola mata saat ruangan gelap"
+                ],
+                ans: 1,
+                exp: "Iris adalah otot berwarna yang mengatur ukuran pupil. Di tempat terang pupil mengecil agar mata tidak silau, sedangkan di tempat gelap pupil melebar agar cahaya yang masuk lebih banyak."
+            },
+            {
+                id: 50, bab: 3, sub: "Cahaya", level: "C6 (Memprediksi)",
+                q: "Siswa kelas 5 membuat periskop sederhana dari kotak kardus dan dua buah cermin datar yang dipasang saling berhadapan dengan kemiringan 45° di bagian atas dan bawah. Mengapa periskop tersebut memungkinkan kita melihat benda di balik tembok tinggi?",
+                opts: [
+                    "Karena cahaya menembus tembok beton secara langsung menuju mata",
+                    "Karena cahaya dari benda dipantulkan oleh cermin datar atas ke cermin datar bawah, lalu dipantulkan tepat menuju mata pengamat",
+                    "Karena kardus membelokkan cahaya seperti air di dalam gelas",
+                    "Karena cermin datar menguraikan warna benda menjadi sinar laser",
+                    "Karena kedua cermin memperbesar tembok hingga menjadi transparan"
+                ],
+                ans: 1,
+                exp: "Periskop memanfaatkan sifat cahaya merambat lurus dan pemantulan cahaya pada dua cermin datar bersudut 45°. Cahaya dari atas dipantulkan ke bawah lalu masuk ke mata pengamat."
+            }
+        ];
+
+        // ==========================================
+        // STATE APLIKASI
+        // ==========================================
+        const state = {
+            studentName: "",
+            studentClass: "Kelas 5 SD",
+            studentSchool: "",
+            mode: "adventure", // 'adventure' | 'exam'
+            currentIdx: 0,
+            answers: new Array(QUESTIONS.length).fill(null), // index opsi 0-4 atau null
+            streak: 0,
+            maxStreak: 0,
+            soundEnabled: true,
+            isFinished: false
+        };
+
+        // ==========================================
+        // SISTEM SUARA (TONE.JS)
+        // ==========================================
+        let synth = null;
+        function initAudio() {
+            if (!synth && typeof Tone !== 'undefined') {
+                try {
+                    synth = new Tone.PolySynth(Tone.Synth, {
+                        oscillator: { type: "triangle" },
+                        envelope: { attack: 0.01, decay: 0.15, sustain: 0.05, release: 0.3 }
+                    }).toDestination();
+                } catch (e) {
+                    console.warn("Audio init skipped:", e);
+                }
+            }
+        }
+
+        function playSound(type) {
+            if (!state.soundEnabled) return;
+            try {
+                if (typeof Tone !== 'undefined' && Tone.context.state !== 'running') {
+                    Tone.start();
+                }
+                initAudio();
+                if (!synth) return;
+
+                if (type === 'click') {
+                    synth.triggerAttackRelease("C5", "32n", undefined, 0.25);
+                } else if (type === 'correct') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease("C5", "16n", now, 0.35);
+                    synth.triggerAttackRelease("E5", "16n", now + 0.08, 0.35);
+                    synth.triggerAttackRelease("G5", "8n", now + 0.16, 0.4);
+                } else if (type === 'wrong') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease("E3", "16n", now, 0.3);
+                    synth.triggerAttackRelease("C3", "8n", now + 0.12, 0.35);
+                } else if (type === 'fanfare') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease(["C4", "E4", "G4"], "8n", now, 0.3);
+                    synth.triggerAttackRelease(["F4", "A4", "C5"], "8n", now + 0.18, 0.35);
+                    synth.triggerAttackRelease(["G4", "B4", "D5"], "8n", now + 0.36, 0.35);
+                    synth.triggerAttackRelease(["C5", "E5", "G5"], "2n", now + 0.54, 0.45);
+                }
+            } catch (e) {
+                // Abaikan jika browser memblokir autoplay
+            }
+        }
+
+        // ==========================================
+        // ELEMEN DOM
+        // ==========================================
+        const el = {
+            screenStart: document.getElementById('screen-start'),
+            screenQuiz: document.getElementById('screen-quiz'),
+            screenResult: document.getElementById('screen-result'),
+
+            inputName: document.getElementById('input-name'),
+            inputClass: document.getElementById('input-class'),
+            inputSchool: document.getElementById('input-school'),
+            nameError: document.getElementById('name-error'),
+            btnStartGame: document.getElementById('btn-start-game'),
+
+            hudName: document.getElementById('hud-name'),
+            hudModeBadge: document.getElementById('hud-mode-badge'),
+            hudScoreBox: document.getElementById('hud-score-box'),
+            hudScore: document.getElementById('hud-score'),
+            hudStreakBox: document.getElementById('hud-streak-box'),
+            hudStreak: document.getElementById('hud-streak'),
+            hudAnsweredCount: document.getElementById('hud-answered-count'),
+            quizProgressBar: document.getElementById('quiz-progress-bar'),
+
+            btnSound: document.getElementById('btn-sound'),
+            soundIcon: document.getElementById('sound-icon'),
+            btnOpenMap: document.getElementById('btn-open-map'),
+
+            qNumberBadge: document.getElementById('q-number-badge'),
+            qBabBadge: document.getElementById('q-bab-badge'),
+            qHotsBadge: document.getElementById('q-hots-badge'),
+            qText: document.getElementById('q-text'),
+            optionsList: document.getElementById('options-list'),
+            feedbackBox: document.getElementById('feedback-box'),
+            feedbackIcon: document.getElementById('feedback-icon'),
+            feedbackTitle: document.getElementById('feedback-title'),
+            feedbackText: document.getElementById('feedback-text'),
+
+            btnPrev: document.getElementById('btn-prev'),
+            btnNext: document.getElementById('btn-next'),
+            btnFinishEarly: document.getElementById('btn-finish-early'),
+
+            modalMap: document.getElementById('modal-map'),
+            btnCloseMap: document.getElementById('btn-close-map'),
+            mapGrid: document.getElementById('map-grid'),
+
+            modalConfirm: document.getElementById('modal-confirm'),
+            confirmIcon: document.getElementById('confirm-icon'),
+            confirmTitle: document.getElementById('confirm-title'),
+            confirmMessage: document.getElementById('confirm-message'),
+            btnConfirmCancel: document.getElementById('btn-confirm-cancel'),
+            btnConfirmOk: document.getElementById('btn-confirm-ok'),
+
+            toast: document.getElementById('toast'),
+            toastText: document.getElementById('toast-text'),
+
+            // Result elements
+            resultTrophy: document.getElementById('result-trophy'),
+            resultStudentInfo: document.getElementById('result-student-info'),
+            resScore: document.getElementById('res-score'),
+            resCorrect: document.getElementById('res-correct'),
+            resWrong: document.getElementById('res-wrong'),
+            resPredicate: document.getElementById('res-predicate'),
+            statBab1Text: document.getElementById('stat-bab1-text'),
+            statBab1Bar: document.getElementById('stat-bab1-bar'),
+            statBab2Text: document.getElementById('stat-bab2-text'),
+            statBab2Bar: document.getElementById('stat-bab2-bar'),
+            statBab3Text: document.getElementById('stat-bab3-text'),
+            statBab3Bar: document.getElementById('stat-bab3-bar'),
+
+            certCanvas: document.getElementById('certificate-canvas'),
+            btnDownloadCert: document.getElementById('btn-download-cert'),
+            btnToggleReview: document.getElementById('btn-toggle-review'),
+            btnCloseReview: document.getElementById('btn-close-review'),
+            btnPlayAgain: document.getElementById('btn-play-again'),
+            reviewSection: document.getElementById('review-section'),
+            reviewList: document.getElementById('review-list')
+        };
+
+        // ==========================================
+        // UTILITAS UI (TOAST & MODAL KONFIRMASI)
+        // ==========================================
+        let toastTimer = null;
+        function showToast(msg) {
+            el.toastText.textContent = msg;
+            el.toast.classList.remove('hidden');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                el.toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        let confirmCallback = null;
+        function openConfirmModal(icon, title, message, onOk) {
+            el.confirmIcon.textContent = icon;
+            el.confirmTitle.textContent = title;
+            el.confirmMessage.textContent = message;
+            confirmCallback = onOk;
+            el.modalConfirm.classList.remove('hidden');
+        }
+
+        el.btnConfirmCancel.addEventListener('click', () => {
+            playSound('click');
+            el.modalConfirm.classList.add('hidden');
+        });
+        el.btnConfirmOk.addEventListener('click', () => {
+            playSound('click');
+            el.modalConfirm.classList.add('hidden');
+            if (typeof confirmCallback === 'function') confirmCallback();
+        });
+
+        // ==========================================
+        // MEMULAI PERMAINAN
+        // ==========================================
+        el.btnStartGame.addEventListener('click', () => {
+            const nameVal = el.inputName.value.trim();
+            if (!nameVal) {
+                el.nameError.classList.remove('hidden');
+                el.inputName.focus();
+                playSound('wrong');
+                return;
+            }
+            el.nameError.classList.add('hidden');
+
+            state.studentName = nameVal;
+            state.studentClass = el.inputClass.value.trim() || "Kelas 5 SD";
+            state.studentSchool = el.inputSchool.value.trim();
+            state.mode = document.querySelector('input[name="game-mode"]:checked').value;
+            state.currentIdx = 0;
+            state.answers = new Array(QUESTIONS.length).fill(null);
+            state.streak = 0;
+            state.maxStreak = 0;
+            state.isFinished = false;
+
+            playSound('click');
+
+            // Setup HUD
+            el.hudName.textContent = state.studentName;
+            if (state.mode === 'adventure') {
+                el.hudModeBadge.textContent = "🌟 Mode Petualangan";
+                el.hudScoreBox.classList.remove('hidden');
+                el.hudStreakBox.classList.remove('hidden');
+                el.hudStreakBox.classList.add('sm:flex');
+            } else {
+                el.hudModeBadge.textContent = "📝 Mode Evaluasi";
+                el.hudScoreBox.classList.add('hidden');
+                el.hudStreakBox.classList.add('hidden');
+                el.hudStreakBox.classList.remove('sm:flex');
+            }
+
+            el.screenStart.classList.add('hidden');
+            el.screenResult.classList.add('hidden');
+            el.screenQuiz.classList.remove('hidden');
+
+            renderQuestion();
+            updateHUD();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        el.inputName.addEventListener('input', () => {
+            if (el.inputName.value.trim()) el.nameError.classList.add('hidden');
+        });
+
+        // Toggle Suara
+        el.btnSound.addEventListener('click', () => {
+            state.soundEnabled = !state.soundEnabled;
+            el.soundIcon.textContent = state.soundEnabled ? "🔊" : "🔇";
+            showToast(state.soundEnabled ? "Efek suara aktif" : "Efek suara dimatikan");
+        });
+
+        // ==========================================
+        // RENDER SOAL & INTERAKSI JAWABAN
+        // ==========================================
+        function getBabColorClass(bab) {
+            if (bab === 1) return "bg-rose-100 text-rose-700";
+            if (bab === 2) return "bg-emerald-100 text-emerald-700";
+            return "bg-amber-100 text-amber-800";
+        }
+
+        function renderQuestion() {
+            const q = QUESTIONS[state.currentIdx];
+            const userAns = state.answers[state.currentIdx];
+            const isLocked = (state.mode === 'adventure' && userAns !== null);
+
+            // Meta badges
+            el.qNumberBadge.textContent = `Soal ${state.currentIdx + 1} / ${QUESTIONS.length}`;
+            el.qBabBadge.className = `font-bold text-xs px-3 py-1 rounded-full ${getBabColorClass(q.bab)}`;
+            el.qBabBadge.textContent = `Bab ${q.bab} • ${q.sub}`;
+            el.qHotsBadge.textContent = `🧠 HOTS ${q.level}`;
+            el.qText.textContent = q.q;
+
+            // Progress bar
+            const pct = ((state.currentIdx + 1) / QUESTIONS.length) * 100;
+            el.quizProgressBar.style.width = `${pct}%`;
+
+            // Render 5 opsi (A - E)
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+            el.optionsList.innerHTML = '';
+
+            q.opts.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.disabled = isLocked;
+
+                let styleClass = "bg-white border-slate-200 text-slate-700";
+                let badgeClass = "bg-slate-100 text-slate-700";
+                let statusIcon = "";
+
+                if (state.mode === 'adventure' && userAns !== null) {
+                    if (idx === q.ans) {
+                        styleClass = "bg-emerald-50 border-emerald-500 text-emerald-900 ring-2 ring-emerald-200";
+                        badgeClass = "bg-emerald-600 text-white";
+                        statusIcon = "✅";
+                    } else if (idx === userAns && userAns !== q.ans) {
+                        styleClass = "bg-rose-50 border-rose-500 text-rose-900";
+                        badgeClass = "bg-rose-600 text-white";
+                        statusIcon = "❌";
+                    } else {
+                        styleClass = "bg-slate-50 border-slate-200 text-slate-400 opacity-70";
+                    }
+                } else if (state.mode === 'exam' && userAns === idx) {
+                    styleClass = "bg-indigo-50 border-indigo-600 text-indigo-900 ring-2 ring-indigo-200";
+                    badgeClass = "bg-indigo-600 text-white";
+                    statusIcon = "✔️";
+                }
+
+                btn.className = `option-card w-full text-left p-3.5 sm:p-4 rounded-2xl border-2 flex items-start gap-3.5 ${styleClass}`;
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-xl font-display font-bold text-sm flex items-center justify-center shrink-0 mt-0.5 ${badgeClass}">
+                        ${letters[idx]}
+                    </span>
+                    <span class="flex-1 text-sm sm:text-base font-semibold leading-snug pt-0.5">${optText}</span>
+                    ${statusIcon ? `<span class="text-lg shrink-0">${statusIcon}</span>` : ''}
+                `;
+
+                btn.addEventListener('click', () => handleSelectOption(idx));
+                el.optionsList.appendChild(btn);
+            });
+
+            // Feedback Pembahasan (Mode Petualangan)
+            if (state.mode === 'adventure' && userAns !== null) {
+                const isCorrect = (userAns === q.ans);
+                el.feedbackBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-300', 'bg-rose-50', 'border-rose-300');
+                if (isCorrect) {
+                    el.feedbackBox.classList.add('bg-emerald-50', 'border-emerald-300');
+                    el.feedbackIcon.textContent = "🎉";
+                    el.feedbackTitle.textContent = "Hebat! Jawabanmu Benar (+2 Poin)";
+                    el.feedbackTitle.className = "font-display font-bold text-base sm:text-lg mb-1 text-emerald-800";
+                } else {
+                    el.feedbackBox.classList.add('bg-rose-50', 'border-rose-300');
+                    el.feedbackIcon.textContent = "💡";
+                    el.feedbackTitle.textContent = `Kurang Tepat. Jawaban Benar: Opsi ${letters[q.ans]}`;
+                    el.feedbackTitle.className = "font-display font-bold text-base sm:text-lg mb-1 text-rose-800";
+                }
+                el.feedbackText.textContent = q.exp;
+            } else {
+                el.feedbackBox.classList.add('hidden');
+            }
+
+            // Status tombol navigasi
+            el.btnPrev.disabled = (state.currentIdx === 0);
+            if (state.currentIdx === QUESTIONS.length - 1) {
+                el.btnNext.classList.add('hidden');
+            } else {
+                el.btnNext.classList.remove('hidden');
+            }
+        }
+
+        function handleSelectOption(optIdx) {
+            const q = QUESTIONS[state.currentIdx];
+            if (state.mode === 'adventure' && state.answers[state.currentIdx] !== null) return;
+
+            state.answers[state.currentIdx] = optIdx;
+
+            if (state.mode === 'adventure') {
+                if (optIdx === q.ans) {
+                    state.streak++;
+                    if (state.streak > state.maxStreak) state.maxStreak = state.streak;
+                    playSound('correct');
+                } else {
+                    state.streak = 0;
+                    playSound('wrong');
+                }
+            } else {
+                playSound('click');
+            }
+
+            updateHUD();
+            renderQuestion();
+        }
+
+        function calculateScoreData() {
+            let correct = 0;
+            let answered = 0;
+            const babStats = {
+                1: { correct: 0, total: 20 },
+                2: { correct: 0, total: 15 },
+                3: { correct: 0, total: 15 }
+            };
+
+            QUESTIONS.forEach((q, i) => {
+                if (state.answers[i] !== null) {
+                    answered++;
+                    if (state.answers[i] === q.ans) {
+                        correct++;
+                        babStats[q.bab].correct++;
+                    }
+                }
+            });
+
+            // 50 soal x 2 poin = 100 skor maksimal
+            const score = correct * 2;
+            const wrong = QUESTIONS.length - correct;
+            return { score, correct, wrong, answered, babStats };
+        }
+
+        function updateHUD() {
+            const { score, answered } = calculateScoreData();
+            el.hudScore.textContent = score;
+            el.hudStreak.textContent = state.streak;
+            el.hudAnsweredCount.textContent = `${answered}/${QUESTIONS.length}`;
+        }
+
+        // Navigasi Soal
+        el.btnPrev.addEventListener('click', () => {
+            if (state.currentIdx > 0) {
+                playSound('click');
+                state.currentIdx--;
+                renderQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        el.btnNext.addEventListener('click', () => {
+            if (state.currentIdx < QUESTIONS.length - 1) {
+                playSound('click');
+                state.currentIdx++;
+                renderQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // Tombol Selesai
+        el.btnFinishEarly.addEventListener('click', () => {
+            playSound('click');
+            const { answered } = calculateScoreData();
+            const remaining = QUESTIONS.length - answered;
+            const msg = remaining > 0
+                ? `Kamu sudah menjawab ${answered} dari 50 soal. Masih ada ${remaining} soal yang belum dijawab. Yakin ingin mengakhiri misi dan melihat skor serta sertifikatmu?`
+                : `Keren! Semua 50 soal telah terjawab. Siap melihat skor akhir dan mencetak Sertifikat Penghargaanmu?`;
+
+            openConfirmModal("🏁", "Selesaikan Misi IPAS?", msg, finishQuiz);
+        });
+
+        // ==========================================
+        // PETA SOAL (MODAL NAVIGATOR)
+        // ==========================================
+        el.btnOpenMap.addEventListener('click', () => {
+            playSound('click');
+            renderQuestionMap();
+            el.modalMap.classList.remove('hidden');
+        });
+
+        el.btnCloseMap.addEventListener('click', () => {
+            playSound('click');
+            el.modalMap.classList.add('hidden');
+        });
+
+        function renderQuestionMap() {
+            el.mapGrid.innerHTML = '';
+            QUESTIONS.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                const ans = state.answers[idx];
+                let cls = "bg-slate-100 text-slate-600 border-slate-200 hover:bg-indigo-50";
+
+                if (idx === state.currentIdx) {
+                    cls = "bg-indigo-600 text-white border-indigo-700 ring-2 ring-indigo-300";
+                } else if (ans !== null) {
+                    if (state.mode === 'adventure') {
+                        cls = (ans === q.ans)
+                            ? "bg-emerald-500 text-white border-emerald-600"
+                            : "bg-rose-500 text-white border-rose-600";
+                    } else {
+                        cls = "bg-emerald-500 text-white border-emerald-600";
+                    }
+                }
+
+                btn.className = `h-10 rounded-xl font-display font-bold text-sm border transition ${cls}`;
+                btn.textContent = idx + 1;
+                btn.addEventListener('click', () => {
+                    playSound('click');
+                    state.currentIdx = idx;
+                    el.modalMap.classList.add('hidden');
+                    renderQuestion();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                el.mapGrid.appendChild(btn);
+            });
+        }
+
+        // ==========================================
+        // LAYAR HASIL, PREDIKAT & SERTIFIKAT
+        // ==========================================
+        function getPredicateInfo(score) {
+            if (score >= 90) return { title: "Profesor Muda IPAS", label: "Sangat Memuaskan", trophy: "🏆" };
+            if (score >= 76) return { title: "Peneliti Sains Hebat", label: "Memuaskan", trophy: "🥇" };
+            if (score >= 60) return { title: "Penjelajah Sains Cerdas", label: "Cukup Baik", trophy: "🥈" };
+            return { title: "Tunas Ilmuwan Semangat", label: "Terus Berlatih", trophy: "🥉" };
+        }
+
+        function finishQuiz() {
+            state.isFinished = true;
+            const data = calculateScoreData();
+            const pred = getPredicateInfo(data.score);
+
+            el.screenQuiz.classList.add('hidden');
+            el.screenResult.classList.remove('hidden');
+            el.reviewSection.classList.add('hidden');
+
+            el.resultTrophy.textContent = pred.trophy;
+            const schoolText = state.studentSchool ? ` • ${state.studentSchool}` : "";
+            el.resultStudentInfo.textContent = `${state.studentName} • ${state.studentClass}${schoolText}`;
+
+            el.resScore.textContent = data.score;
+            el.resCorrect.textContent = data.correct;
+            el.resWrong.textContent = data.wrong;
+            el.resPredicate.textContent = `${pred.title} (${pred.label})`;
+
+            // Update statistik per Bab
+            const p1 = Math.round((data.babStats[1].correct / data.babStats[1].total) * 100);
+            const p2 = Math.round((data.babStats[2].correct / data.babStats[2].total) * 100);
+            const p3 = Math.round((data.babStats[3].correct / data.babStats[3].total) * 100);
+
+            el.statBab1Text.textContent = `${data.babStats[1].correct}/${data.babStats[1].total} Benar (${p1}%)`;
+            el.statBab2Text.textContent = `${data.babStats[2].correct}/${data.babStats[2].total} Benar (${p2}%)`;
+            el.statBab3Text.textContent = `${data.babStats[3].correct}/${data.babStats[3].total} Benar (${p3}%)`;
+
+            setTimeout(() => {
+                el.statBab1Bar.style.width = `${p1}%`;
+                el.statBab2Bar.style.width = `${p2}%`;
+                el.statBab3Bar.style.width = `${p3}%`;
+            }, 150);
+
+            // Gambar Sertifikat di Canvas
+            drawCertificate(data, pred);
+
+            // Render Pembahasan
+            renderReviewList();
+
+            // Efek suara & confetti
+            playSound('fanfare');
+            if (data.score >= 60) startConfetti();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /**
+         * Menggambar Sertifikat Penghargaan Resolusi Tinggi (1400 x 990)
+         */
+        function drawCertificate(data, pred) {
+            const canvas = el.certCanvas;
+            const ctx = canvas.getContext('2d');
+            const W = 1400;
+            const H = 990;
+            canvas.width = W;
+            canvas.height = H;
+
+            // 1. Latar Belakang Krem Elegan
+            const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+            bgGrad.addColorStop(0, '#fffdf7');
+            bgGrad.addColorStop(0.5, '#ffffff');
+            bgGrad.addColorStop(1, '#f8fafc');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, W, H);
+
+            // Pola halus watermark sudut
+            ctx.save();
+            ctx.fillStyle = 'rgba(79, 70, 229, 0.04)';
+            ctx.beginPath();
+            ctx.arc(0, 0, 320, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(W, H, 340, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // 2. Bingkai Ganda (Indigo & Emas)
+            ctx.strokeStyle = '#312e81';
+            ctx.lineWidth = 18;
+            ctx.strokeRect(36, 36, W - 72, H - 72);
+
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 5;
+            ctx.strokeRect(60, 60, W - 120, H - 120);
+
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(72, 72, W - 144, H - 144);
+
+            // Ornamen Sudut Emas
+            const corners = [[60, 60], [W - 60, 60], [60, H - 60], [W - 60, H - 60]];
+            ctx.fillStyle = '#d97706';
+            corners.forEach(([cx, cy]) => {
+                ctx.beginPath();
+                ctx.arc(cx, cy, 12, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // 3. Lencana Atas
+            ctx.fillStyle = '#312e81';
+            ctx.beginPath();
+            ctx.arc(W / 2, 148, 46, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 5;
+            ctx.stroke();
+
+            ctx.font = '46px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🏆', W / 2, 150);
+
+            // 4. Judul Sertifikat
+            ctx.fillStyle = '#1e1b4b';
+            ctx.font = 'bold 58px Georgia, serif';
+            ctx.fillText('SERTIFIKAT PENGHARGAAN', W / 2, 248);
+
+            ctx.fillStyle = '#d97706';
+            ctx.font = 'bold 21px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText('GIM EDUKASI INTERAKTIF IPAS KELAS 5 SD • SEMESTER 1 (HOTS LEVEL 5)', W / 2, 294);
+
+            // Garis pemisah dekoratif
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(W / 2 - 220, 322);
+            ctx.lineTo(W / 2 + 220, 322);
+            ctx.stroke();
+
+            // 5. Penerima Sertifikat
+            ctx.fillStyle = '#475569';
+            ctx.font = 'italic 24px Georgia, serif';
+            ctx.fillText('Dengan bangga diberikan kepada:', W / 2, 372);
+
+            ctx.fillStyle = '#312e81';
+            ctx.font = 'bold 62px Georgia, serif';
+            ctx.fillText(state.studentName.toUpperCase(), W / 2, 444);
+
+            // Garis bawah nama
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(W / 2 - 330, 482);
+            ctx.lineTo(W / 2 + 330, 482);
+            ctx.stroke();
+
+            const subInfo = state.studentSchool
+                ? `${state.studentClass}  •  ${state.studentSchool}`
+                : state.studentClass;
+            ctx.fillStyle = '#334155';
+            ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(subInfo, W / 2, 518);
+
+            // 6. Deskripsi Capaian
+            ctx.fillStyle = '#475569';
+            ctx.font = '22px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText('Telah menyelesaikan 50 Soal HOTS Level 5 Mata Pelajaran IPAS Semester 1', W / 2, 574);
+            ctx.fillText('(Proses dalam Tubuh Manusia, Ekosistem di Sekitarku, serta Bunyi dan Cahaya)', W / 2, 608);
+
+            // 7. Kotak Skor & Predikat
+            const boxW = 660;
+            const boxH = 110;
+            const boxX = (W - boxW) / 2;
+            const boxY = 648;
+
+            ctx.fillStyle = '#eef2ff';
+            ctx.strokeStyle = '#6366f1';
+            ctx.lineWidth = 3;
+            roundRect(ctx, boxX, boxY, boxW, boxH, 20);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#4338ca';
+            ctx.font = 'bold 42px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(`SKOR AKHIR: ${data.score} / 100`, W / 2, boxY + 42);
+
+            ctx.fillStyle = '#b45309';
+            ctx.font = 'bold 23px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(`Predikat: ${pred.title} (${pred.label})  •  Benar ${data.correct}/50 Soal`, W / 2, boxY + 84);
+
+            // 8. Tanggal & Tanda Tangan
+            const today = new Date();
+            const months = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+            const dateStr = `${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}`;
+
+            // Kiri: Tanggal
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#64748b';
+            ctx.font = '20px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText('Tanggal Penyelesaian', 330, 825);
+            ctx.fillStyle = '#1e293b';
+            ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(dateStr, 330, 862);
+
+            // Tengah: Stempel Emas
+            ctx.beginPath();
+            ctx.arc(W / 2, 850, 48, 0, Math.PI * 2);
+            ctx.fillStyle = '#fef3c7';
+            ctx.fill();
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.fillStyle = '#b45309';
+            ctx.font = 'bold 16px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText('LULUS', W / 2, 842);
+            ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText('IPAS HOTS', W / 2, 864);
+
+            // Kanan: Penyelenggara
+            ctx.fillStyle = '#64748b';
+            ctx.font = '20px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText('Pembimbing Edukasi IPAS', W - 330, 825);
+            ctx.fillStyle = '#312e81';
+            ctx.font = 'italic bold 26px Georgia, serif';
+            ctx.fillText('Tim Sains Kelas 5 SD', W - 330, 864);
+        }
+
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+        }
+
+        // Unduh Sertifikat PNG
+        el.btnDownloadCert.addEventListener('click', () => {
+            playSound('click');
+            try {
+                const link = document.createElement('a');
+                const safeName = state.studentName.replace(/[^a-zA-Z0-9]/g, '_') || 'Siswa';
+                link.download = `Sertifikat_IPAS_Kelas5_${safeName}.png`;
+                link.href = el.certCanvas.toDataURL('image/png', 1.0);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast("🎉 Sertifikat berhasil diunduh!");
+            } catch (err) {
+                showToast("⚠️ Gagal mengunduh sertifikat. Coba klik kanan pada gambar sertifikat lalu Simpan.");
+            }
+        });
+
+        // ==========================================
+        // PEMBAHASAN LENGKAP 50 SOAL
+        // ==========================================
+        function renderReviewList() {
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+            el.reviewList.innerHTML = '';
+
+            QUESTIONS.forEach((q, idx) => {
+                const userAns = state.answers[idx];
+                const isCorrect = (userAns === q.ans);
+                const card = document.createElement('div');
+                card.className = `p-4 sm:p-5 rounded-2xl border-2 ${isCorrect ? 'bg-emerald-50/50 border-emerald-200' : 'bg-rose-50/50 border-rose-200'}`;
+
+                const userAnsText = userAns !== null
+                    ? `${letters[userAns]}. ${q.opts[userAns]}`
+                    : 'Tidak dijawab';
+
+                card.innerHTML = `
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span class="font-display font-bold text-sm text-slate-800">Soal ${idx + 1} • Bab ${q.bab} (${q.sub})</span>
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-full ${isCorrect ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}">
+                            ${isCorrect ? '✅ Benar (+2)' : '❌ Salah (0)'}
+                        </span>
+                    </div>
+                    <p class="text-sm font-semibold text-slate-800 mb-3">${q.q}</p>
+                    <div class="text-xs sm:text-sm space-y-1 mb-3">
+                        <p class="${isCorrect ? 'text-emerald-700 font-bold' : 'text-rose-700 font-bold'}">
+                            Jawabanmu: ${userAnsText}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-bold">Jawaban Benar: ${letters[q.ans]}. ${q.opts[q.ans]}</p>` : ''}
+                    </div>
+                    <div class="bg-white/80 p-3 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-600">
+                        <strong class="text-indigo-700">💡 Pembahasan HOTS:</strong> ${q.exp}
+                    </div>
+                `;
+                el.reviewList.appendChild(card);
+            });
+        }
+
+        el.btnToggleReview.addEventListener('click', () => {
+            playSound('click');
+            el.reviewSection.classList.toggle('hidden');
+            if (!el.reviewSection.classList.contains('hidden')) {
+                el.reviewSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        el.btnCloseReview.addEventListener('click', () => {
+            playSound('click');
+            el.reviewSection.classList.add('hidden');
+        });
+
+        el.btnPlayAgain.addEventListener('click', () => {
+            playSound('click');
+            openConfirmModal(
+                "🔄",
+                "Main Lagi dari Awal?",
+                "Skor dan jawabanmu saat ini akan direset. Pastikan kamu sudah mengunduh sertifikat jika ingin menyimpannya.",
+                () => {
+                    el.screenResult.classList.add('hidden');
+                    el.screenStart.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            );
+        });
+
+        // ==========================================
+        // ANIMASI CONFETTI
+        // ==========================================
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.classList.remove('hidden');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = ['#4f46e5', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
+            const pieces = Array.from({ length: 120 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * -canvas.height,
+                r: Math.random() * 6 + 4,
+                d: Math.random() * 4 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                tilt: Math.random() * 10 - 5,
+                tiltSpeed: Math.random() * 0.1 + 0.05
+            }));
+
+            let frames = 0;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.d;
+                    p.tilt += p.tiltSpeed;
+                    p.x += Math.sin(p.tilt) * 1.5;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.r * 1.5, p.r);
+                });
+                frames++;
+                if (frames < 220) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    canvas.classList.add('hidden');
+                }
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
